@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
         // Redirect on sign in or sign out
         if (event === 'SIGNED_IN') {
-          router.push('/dashboard')
+          router.push('/')
         } else if (event === 'SIGNED_OUT') {
           router.push('/login')
         }
