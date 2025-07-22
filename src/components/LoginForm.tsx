@@ -7,11 +7,12 @@ export default function LoginForm() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { signIn } = useAuth()
+  const { signIn, error: authError, clearError } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    clearError() // Clear any previous auth errors
     setLoading(true)
 
     if (!email || !password) {
@@ -20,13 +21,16 @@ export default function LoginForm() {
       return
     }
 
-    const { error } = await signIn(email, password)
-    
-    if (error) {
-      setError(error)
+    try {
+      await signIn(email, password)
+      // On success, the auth state change in AuthContext will handle the redirect
+    } catch (err) {
+      // The error is already set in the AuthContext's signIn function
+      // We can use the authError from context or the caught error
+      setError(authError || (err instanceof Error ? err.message : 'Sign in failed'))
+    } finally {
+      setLoading(false)
     }
-    
-    setLoading(false)
   }
 
   return (
@@ -34,9 +38,9 @@ export default function LoginForm() {
       <div className="card-body">
         <h2 className="card-title">Login</h2>
         
-        {error && (
+        {(error || authError) && (
           <div className="alert alert-danger" role="alert">
-            {error}
+            {error || authError}
           </div>
         )}
         
