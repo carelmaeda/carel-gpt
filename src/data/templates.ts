@@ -81,7 +81,7 @@ export const templates: Templates = {
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#e9e9e9; font-family:Arial, sans-serif;">
     <tr>
       <td align="center" style="padding:32px; font-size:12px; color:#555555;">
-        <p style="margin:0 0 8px 0; line-height:1.5;">&copy; ROYAL CANIN&reg; SAS 2024.<br>All rights reserved. An Affiliate of Mars, Incorporated.</p>
+        <p style="margin:0 0 8px 0; line-height:1.5;">&copy; ROYAL CANIN&reg; 2025.<br>All rights reserved. An Affiliate of Mars, Incorporated.</p>
         <p style="margin:16px 0 8px 0;">
           <a href="https://www.mars.com/legal" target="_blank" style="color:#555555; text-decoration:underline;">Legal</a> |
           <a href="https://www.mars.com/privacy" target="_blank" style="color:#555555; text-decoration:underline;">Privacy</a>
@@ -155,15 +155,19 @@ export const templates: Templates = {
 </body>
 </html>
 `,
-  ctaTemplate: `<a target="_blank" href="{{cta_link}}" style="display:inline-block; background-color:#E2001A; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:5px; font-size:14px;">{{cta_text}}</a>`,
+  ctaTemplate: `<a target="_blank" href="{{cta_link}}" style="display:inline-block; background-color:#0054A4; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:5px; font-size:14px;">{{cta_text}}</a>`,
   footerTemplate: `
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#e9e9e9; font-family:Arial, sans-serif;">
     <tr>
       <td align="center" style="padding:32px; font-size:12px; color:#555555;">
-        <p style="margin:0 0 8px 0; line-height:1.5;">&copy; ROYAL CANIN&reg; SAS 2024.<br>All rights reserved. An Affiliate of Mars, Incorporated.</p>
+        <p style="line-height: 24px">
+          Hill's Pet Nutrition Canada<br />P.O. Box 699 Streetsville<br />Mississauga,
+          Ontario L5M 2C2
+        </p>
+        <p>Tel: 1-800-445-5777</p>
         <p style="margin:16px 0 8px 0;">
-          <a href="https://www.mars.com/legal" target="_blank" style="color:#555555; text-decoration:underline;">Legal</a> |
-          <a href="https://www.mars.com/privacy" target="_blank" style="color:#555555; text-decoration:underline;">Privacy</a>
+          <a  href="https://www.hillspet.ca/terms-and-conditions" target="_blank" style="color:#555555; text-decoration:underline;">Legal</a> |
+          <a href="https://www.hillspet.ca/en-ca/legal-statement-and-privacy-policy" target="_blank" style="color:#555555; text-decoration:underline;">Privacy</a>
         </p>
         <p style="margin:24px 0 8px 0;">Powered by:</p>
         <img src="https://paygos.ca/wp-content/themes/paygos2021/images/logo.png" alt="Paygos" width="100" style="display:block; margin:0 auto; filter:brightness(0) contrast(0);">
@@ -171,7 +175,7 @@ export const templates: Templates = {
     </tr>
   </table>`,
   },
-    "Vital Essentials": {
+    "MARS": {
     Template1: `
 <!DOCTYPE html>
 <html>
@@ -188,7 +192,7 @@ export const templates: Templates = {
           <!-- Logo -->
           <tr>
             <td align="center" style="padding:16px;">
-              <img src="https://cdn.brandfetch.io/idBDVq_JTQ/theme/dark/logo.svg?c=1dxbfHSJFAPEGdCLU4o5B" alt="Logo" width="200" height="100" style="display:block; border:0;">
+              <img src="https://asset.brandfetch.io/idFvQZLcOg/idWp5575tP.svg" alt="Logo" width="120" height="120" style="display:block; border:0;">
             </td>
           </tr>
 
@@ -234,13 +238,12 @@ export const templates: Templates = {
 </body>
 </html>
 `,
-  ctaTemplate: `<a target="_blank" href="{{cta_link}}" style="display:inline-block; background-color:#E2001A; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:5px; font-size:14px;">{{cta_text}}</a>`,
+  ctaTemplate: `<a target="_blank" href="{{cta_link}}" style="display:inline-block; background-color:#0000A0; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:5px; font-size:14px;">{{cta_text}}</a>`,
   footerTemplate: `
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#e9e9e9; font-family:Arial, sans-serif;">
     <tr>
       <td align="center" style="padding:32px; font-size:12px; color:#555555;">
-        <p style="margin:0 0 8px 0; line-height:1.5;">&copy; ROYAL CANIN&reg; SAS 2024.<br>All rights reserved. An Affiliate of Mars, Incorporated.</p>
-        <p style="margin:16px 0 8px 0;">
+          <p style="line-height:24px;">© 2025 Mars, Incorporated and its Affiliates. All Rights Reserved</p>        <p style="margin:16px 0 8px 0;">
           <a href="https://www.mars.com/legal" target="_blank" style="color:#555555; text-decoration:underline;">Legal</a> |
           <a href="https://www.mars.com/privacy" target="_blank" style="color:#555555; text-decoration:underline;">Privacy</a>
         </p>

@@ -1,1 +1,1 @@
-{"version":3,"sources":[],"names":[],"mappings":"","file":"globals.css"}
+{"version":3,"sources":["globals.scss","globals.css"],"names":[],"mappings":"AAAA;EACE,gBAAA;EACA,mBAAA;ACCF","file":"globals.css","sourcesContent":[".preview-wrapper {\r\n  overflow-y: auto;\r\n  white-space: normal;\r\n}\r\n",".preview-wrapper {\n  overflow-y: auto;\n  white-space: normal;\n}"]}

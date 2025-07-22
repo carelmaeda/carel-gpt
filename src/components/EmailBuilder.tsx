@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { templates, Templates, TemplateSet } from '@/data/templates';
 import { renderTemplate } from '@/lib/renderTemplate';
+import LogoutButton from '@/components/LogoutButton';
 
 export default function EmailBuilder() {
   // Typed templates for TypeScript safety
@@ -122,7 +123,10 @@ export default function EmailBuilder() {
 
   return (
     <div className="container py-4">
-      <h1 className="mb-4">Email Generator</h1>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h1 className="mb-0">Email Generator</h1>
+        <LogoutButton />
+      </div>
       <div className="row">
         {/* Form Section */}
         <div className="col-md-6 mb-4">
@@ -285,8 +289,7 @@ export default function EmailBuilder() {
         <div className="col-md-6">
           <h5>Live Preview</h5>
           <div
-            className="border p-3 bg-white mb-3"
-            style={{ minHeight: 300, overflowY: 'auto', whiteSpace: 'normal' }}
+            className="border p-3 bg-white mb-3 rounded preview-wrapper"
             dangerouslySetInnerHTML={{ __html: finalHtml }}
           />
 
