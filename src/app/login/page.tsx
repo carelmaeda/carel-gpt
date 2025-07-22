@@ -14,7 +14,7 @@ export default function LoginPage() {
           <LoginForm />
           
           <div className="text-center mt-4">
-            <p>Don't have an account?</p>
+            <p>Don&apos;t have an account?</p>
             <Link href="/signup" className="btn btn-link">
               Create one here
             </Link>

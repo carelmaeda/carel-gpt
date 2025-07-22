@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { templates, Templates, TemplateSet } from '@/data/templates';
 import { renderTemplate } from '@/lib/renderTemplate';
 
@@ -21,7 +21,10 @@ export default function EmailBuilder() {
   const [showToast, setShowToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   // Get templates for selected client or empty
-  const clientTemplates: TemplateSet = client && typedTemplates[client] ? typedTemplates[client] : {} as TemplateSet;
+  const clientTemplates: TemplateSet = useMemo(() => 
+    client && typedTemplates[client] ? typedTemplates[client] : {} as TemplateSet,
+    [client, typedTemplates]
+  );
 
   // Filter template keys (exclude CTA/footer templates)
   const templateOptions = Object.keys(clientTemplates).filter(
