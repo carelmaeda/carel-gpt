@@ -1,5 +1,6 @@
 import "./globals.css"
 import "bootstrap/dist/css/bootstrap.css"
+import { AuthProvider } from '@/contexts/AuthContext'
 
 export const metadata = {
   title: 'Email Generator',
@@ -12,7 +13,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
       </head>
       <body>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

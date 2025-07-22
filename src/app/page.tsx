@@ -1,5 +1,10 @@
 import EmailBuilder from '@/components/EmailBuilder';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function HomePage() {
-  return <EmailBuilder />;
+  return (
+    <ProtectedRoute>
+      <EmailBuilder />
+    </ProtectedRoute>
+  );
 }
