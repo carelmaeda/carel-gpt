@@ -35,18 +35,17 @@ export default function SignupForm() {
       return
     }
 
-    const { error } = await signUp(email, password)
-    
-    if (error) {
-      setError(error)
-    } else {
+    try {
+      await signUp(email, password)
       setSuccess(true)
       setEmail('')
       setPassword('')
       setConfirmPassword('')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Sign up failed')
+    } finally {
+      setLoading(false)
     }
-    
-    setLoading(false)
   }
 
   if (success) {
