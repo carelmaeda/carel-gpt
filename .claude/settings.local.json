@@ -20,7 +20,14 @@
       "Bash(git push:*)",
       "Bash(git fetch:*)",
       "Bash(git checkout:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(ls:*)",
+      "Bash(curl:*)",
+      "Bash(test:*)",
+      "Bash(pkill:*)",
+      "Bash(npm install:*)",
+      "Bash(git config:*)",
+      "Bash(git reset:*)"
     ],
     "deny": []
   }
