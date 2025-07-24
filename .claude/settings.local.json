@@ -21,7 +21,8 @@
       "Bash(timeout 10 npm run dev)",
       "Bash(timeout 10 npm run build)",
       "Bash(pkill:*)",
-      "Bash(true)"
+      "Bash(true)",
+      "Bash(git checkout:*)"
     ],
     "deny": []
   }
