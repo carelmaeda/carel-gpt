@@ -7,7 +7,7 @@ export default function SignupPage() {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="text-center mb-5">
-            <h1>Email Generator</h1>
+            <h1>Carel GPT</h1>
             <p className="lead">Create your account</p>
           </div>
           

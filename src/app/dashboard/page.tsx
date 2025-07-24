@@ -13,44 +13,41 @@ export default function DashboardPage() {
             </div>
             
             <div className="row">
-              <div className="col-md-8">
+              <div className="col-12">
                 <div className="card">
                   <div className="card-body">
-                    <h3 className="card-title">Welcome to your Dashboard</h3>
+                    <h3 className="card-title">Welcome</h3>
                     <p className="card-text">
-                      This is a protected page that requires authentication. 
-                      You can only see this content when you&apos;re logged in.
+                      Choose from the available tools below to get started.
                     </p>
                     
-                    <div className="alert alert-success">
-                      <h5 className="alert-heading">Success!</h5>
-                      <p>Your Supabase authentication is working correctly. You are now signed in and can access protected content.</p>
+                    <div className="row g-3 mt-3">
+                      <div className="col-md-6">
+                        <div className="card border-primary">
+                          <div className="card-body text-center">
+                            <i className="bi bi-envelope-fill text-primary mb-3" style={{fontSize: '2rem'}}></i>
+                            <h5 className="card-title">Email Generator</h5>
+                            <p className="card-text">Create branded HTML emails with customizable templates</p>
+                            <a href="/dashboard/email-generator" className="btn btn-primary">
+                              Open Email Generator
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="col-md-6">
+                        <div className="card border-secondary">
+                          <div className="card-body text-center">
+                            <i className="bi bi-plus-circle text-secondary mb-3" style={{fontSize: '2rem'}}></i>
+                            <h5 className="card-title">More Features Coming Soon</h5>
+                            <p className="card-text">Additional tools and features will be added here</p>
+                            <button className="btn btn-secondary" disabled>
+                              Coming Soon
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    
-                    <h4>What&apos;s next?</h4>
-                    <ul className="list-group list-group-flush">
-                      <li className="list-group-item">Build your application features</li>
-                      <li className="list-group-item">Add user profile management</li>
-                      <li className="list-group-item">Implement role-based access control</li>
-                      <li className="list-group-item">Set up database tables and relationships</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="col-md-4">
-                <div className="card">
-                  <div className="card-header">
-                    <h5>Quick Actions</h5>
-                  </div>
-                  <div className="card-body">
-                    <p className="card-text">Add your application-specific actions here.</p>
-                    <button className="btn btn-primary w-100 mb-2">
-                      Create New Project
-                    </button>
-                    <button className="btn btn-outline-primary w-100">
-                      View Settings
-                    </button>
                   </div>
                 </div>
               </div>
