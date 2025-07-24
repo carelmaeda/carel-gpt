@@ -24,9 +24,10 @@ export default function LoginForm() {
     
     if (error) {
       setError(error)
+      setLoading(false)
+    } else {
+      setError('Redirecting to dashboard...')
     }
-    
-    setLoading(false)
   }
 
   return (
@@ -35,7 +36,7 @@ export default function LoginForm() {
         <h2 className="card-title">Login</h2>
         
         {error && (
-          <div className="alert alert-danger" role="alert">
+          <div className={`alert ${error.includes('Redirecting') ? 'alert-info' : 'alert-danger'}`} role="alert">
             {error}
           </div>
         )}

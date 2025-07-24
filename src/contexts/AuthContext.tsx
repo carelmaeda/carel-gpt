@@ -52,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { error: error.message }
     }
     
-    router.push('/')
+    router.push('/dashboard')
     return {}
   }
 
@@ -70,8 +70,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const signOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
+    try {
+      const { error } = await supabase.auth.signOut()
+      if (error) {
+        console.error('Logout error:', error)
+      }
+    } catch (err) {
+      console.error('Logout failed:', err)
+    } finally {
+      setUser(null)
+      setSession(null)
+      router.push('/login')
+    }
   }
 
   const value: AuthContextType = {
