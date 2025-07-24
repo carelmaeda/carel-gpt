@@ -1,4 +1,44 @@
-.preview-wrapper {
-  overflow-y: auto;
-  white-space: normal;
-}/*# sourceMappingURL=globals.css.map */
+/*# sourceMappingURL=globals.css.map */
+
+/* Sidebar collapse/expand transitions */
+.sidebar-expanded {
+  width: 250px;
+  min-width: 250px;
+  transition: width 0.3s ease;
+}
+
+.sidebar-collapsed {
+  width: 60px;
+  min-width: 60px;
+  transition: width 0.3s ease;
+}
+
+.sidebar-collapsed .nav-link {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Responsive sidebar behavior */
+@media (max-width: 767.98px) {
+  .sidebar-expanded,
+  .sidebar-collapsed {
+    position: fixed;
+    top: 56px; /* Height of toolbar */
+    left: 0;
+    height: calc(100vh - 56px);
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar-expanded.show,
+  .sidebar-collapsed.show {
+    transform: translateX(0);
+  }
+}
+
+/* Ensure proper flexbox behavior */
+.transition-all {
+  transition: all 0.3s ease;
+}
