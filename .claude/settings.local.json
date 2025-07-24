@@ -15,7 +15,9 @@
       "Bash(powershell:*)",
       "Bash(git remote set-url:*)",
       "Bash(dir /a .env*)",
-      "Bash(del nul)"
+      "Bash(del nul)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
