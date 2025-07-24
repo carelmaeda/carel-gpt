@@ -4,7 +4,20 @@
       "Bash(npm run build:*)",
       "Bash(taskkill:*)",
       "Bash(rm:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(mkdir:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run lint)",
+      "Bash(npx tsc:*)",
+      "Bash(npx next build:*)",
+      "Bash(timeout 30 npm run build)",
+      "Bash(set DEBUG=next:*)",
+      "Bash(powershell:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(dir /a .env*)",
+      "Bash(del nul)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
