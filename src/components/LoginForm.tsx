@@ -47,7 +47,7 @@ export default function LoginForm() {
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
-              Paygos Email
+              Email
             </label>
             <input
               type="email"

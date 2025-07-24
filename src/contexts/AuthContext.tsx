@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
         // Redirect on sign in or sign out
         if (event === 'SIGNED_IN') {
-          router.push('/')
+          router.push('/dashboard')
         } else if (event === 'SIGNED_OUT') {
           router.push('/login')
         }
@@ -83,18 +83,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(true)
       clearError()
       
-      const { error: authError } = await supabase.auth.signInWithPassword({
+      console.log('Attempting to sign in with email:', email)
+      
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
       
       if (authError) {
+        console.error('Supabase auth error:', authError)
         throw authError
       }
       
+      console.log('Sign in successful:', data)
+      
     } catch (error) {
       console.error('Sign in error:', error)
-      setError(error instanceof Error ? error.message : 'Sign in failed')
+      let errorMessage = 'Sign in failed'
+      
+      if (error instanceof Error) {
+        if (error.message.includes('Invalid login credentials')) {
+          errorMessage = 'Invalid email or password'
+        } else if (error.message.includes('Email not confirmed')) {
+          errorMessage = 'Please check your email and confirm your account'
+        } else if (error.message.includes('network')) {
+          errorMessage = 'Network error. Please check your connection'
+        } else {
+          errorMessage = error.message
+        }
+      }
+      
+      setError(errorMessage)
       throw error
     } finally {
       setLoading(false)
