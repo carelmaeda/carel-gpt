@@ -234,15 +234,13 @@ export default function EmailBuilder() {
                     height: 200,
                     menubar: false,
                     plugins: [
-                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
-                      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                      'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                      'advlist', 'autolink', 'lists', 'link', 'charmap',
+                      'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
+                      'insertdatetime', 'table', 'help', 'wordcount'
                     ],
-                    toolbar: 'undo redo |  bold italic forecolor | link image table mergetags | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code | removeformat | help',
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link | removeformat | help',
                     content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; font-size:14px }',
-                    skin: 'oxide',
-                    content_css: 'writer',
-
+                    skin: 'oxide'
                   }}
                 />
               </div>
