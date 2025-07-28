@@ -226,7 +226,7 @@ export default function EmailBuilder() {
                   Email Body
                 </label>
                 <Editor
-                  apiKey="35nsntv0kinda93tl6lt5vyvy1tybvb6gbk0fyp28jjyu2kv"
+                  apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
                   id="emailBody"
                   value={emailBody}
                   onEditorChange={(content) => setEmailBody(content)}
