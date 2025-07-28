@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import { Editor } from '@tinymce/tinymce-react';
 import { templates, Templates, TemplateSet } from '@/data/templates';
 import { renderTemplate } from '@/lib/renderTemplate';
-import LogoutButton from '@/components/LogoutButton';
 
 export default function EmailBuilder() {
   // Typed templates for TypeScript safety
@@ -123,10 +123,7 @@ export default function EmailBuilder() {
 
   return (
     <div className="container py-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="mb-0">Email Generator</h1>
-        <LogoutButton />
-      </div>
       <div className="row">
         {/* Form Section */}
         <div className="col-md-6 mb-4">
@@ -228,12 +225,25 @@ export default function EmailBuilder() {
                 <label htmlFor="emailBody" className="form-label">
                   Email Body
                 </label>
-                <textarea
+                <Editor
+                  apiKey="35nsntv0kinda93tl6lt5vyvy1tybvb6gbk0fyp28jjyu2kv"
                   id="emailBody"
-                  className="form-control"
-                  rows={5}
                   value={emailBody}
-                  onChange={(e) => setEmailBody(e.target.value)}
+                  onEditorChange={(content) => setEmailBody(content)}
+                  init={{
+                    height: 200,
+                    menubar: false,
+                    plugins: [
+                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
+                      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                      'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                    ],
+                    toolbar: 'undo redo |  bold italic forecolor | link image table mergetags | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | code | removeformat | help',
+                    content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; font-size:14px }',
+                    skin: 'oxide',
+                    content_css: 'writer',
+
+                  }}
                 />
               </div>
 
