@@ -5,7 +5,7 @@ export default function DashboardPage() {
     <Layout>
           <h2 className="card-title">Welcome</h2>
           <p className="card-text">
-            Choose from the available tools below to get started.
+            How can I help you today?
           </p>
           
           <div className="row g-3 mt-3">

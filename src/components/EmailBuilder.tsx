@@ -136,8 +136,8 @@ export default function EmailBuilder() {
   };
 
   return (
-    <div className="container py-4">
-        <h1 className="mb-0">Email Generator</h1>
+    <div className="container">
+      <h2 className="mb-0">Email Generator</h2>
       <div className="row">
         {/* Form Section */}
         <div className="col-md-6 mb-4">

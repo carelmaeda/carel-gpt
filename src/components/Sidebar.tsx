@@ -89,7 +89,7 @@ function Sidebar({ collapsed, mobileOpen }: SidebarProps) {
       collapsed ? 'sidebar-collapsed' : 'sidebar-expanded'
     } d-md-flex ${mobileOpen ? 'show' : ''}`}>
       <div className="p-3 flex-grow-1">
-        {!collapsed && <h5 className="mb-3">Carel GPT</h5>}
+        {!collapsed && <h5 className="mb-3">Menu</h5>}
         
         <nav className="nav flex-column">
           {navItems.map((item) => (
@@ -118,7 +118,7 @@ function Sidebar({ collapsed, mobileOpen }: SidebarProps) {
               <div className="fw-semibold text-truncate" style={{maxWidth: '150px'}}>
                 {user?.email}
               </div>
-              <small className="text-muted">Logged in</small>
+              <small className="text-muted d-none">Logged in</small>
             </div>
           </div>
         </div>
