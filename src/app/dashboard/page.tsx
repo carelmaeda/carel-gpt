@@ -15,7 +15,7 @@ export default function DashboardPage() {
                   <i className="bi bi-envelope-fill text-primary mb-3" style={{fontSize: '2rem'}}></i>
                   <h5 className="card-title">Email Generator</h5>
                   <p className="card-text">Create branded HTML emails with customizable templates</p>
-                  <a href="/dashboard/email-generator" className="btn btn-primary">
+                  <a href="/email-generator" className="btn btn-primary">
                     Open Email Generator
                   </a>
                 </div>

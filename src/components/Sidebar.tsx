@@ -71,19 +71,17 @@ function Sidebar({ collapsed, mobileOpen }: SidebarProps) {
       exact: true
     },
     {
-      href: '/dashboard/email-generator',
+      href: '/email-generator',
       icon: 'bi-envelope-at',
       label: 'Email Generator',
-      exact: false
+      exact: true
     }
   ]
 
   const isActive = (href: string, exact: boolean) => {
-    if (exact) {
-      return pathname === href
-    }
-    // For non-exact matches, ensure we don't match parent routes
-    return pathname.startsWith(href) && pathname !== '/dashboard'
+    const normalizedPathname = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname
+    const normalizedHref = href.endsWith('/') ? href.slice(0, -1) : href
+    return normalizedPathname === normalizedHref
   }
 
   return (

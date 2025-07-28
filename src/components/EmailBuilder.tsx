@@ -99,6 +99,20 @@ export default function EmailBuilder() {
       .catch(() => setShowToast({ message: 'Failed to copy HTML.', type: 'error' }));
   };
 
+  const resetForm = () => {
+    setClient('');
+    setTemplateName('');
+    setEmailBody('');
+    setEmailTitle('');
+    setEmailHeader('');
+    setIncludeCTA(false);
+    setCtaText('');
+    setCtaLink('');
+    setIncludeFooter(false);
+    setFinalHtml('');
+    setShowToast({ message: 'Form reset successfully!', type: 'success' });
+  };
+
   const downloadHtml = () => {
     if (!finalHtml) {
       setShowToast({ message: 'No HTML to download!', type: 'error' });
@@ -304,6 +318,12 @@ export default function EmailBuilder() {
           {/*Buttons */}
           {templateName && (
             <div className="d-flex gap-2">
+               <button
+                className="btn btn-outline-danger"
+                onClick={resetForm}
+              >
+                Reset Form
+              </button>
               <button
                 className="btn btn-primary"
                 onClick={copyToClipboard}
