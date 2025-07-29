@@ -25,7 +25,10 @@
       "Bash(git checkout:*)",
       "Bash(git pull:*)",
       "Bash(git merge:*)",
-      "Bash(cmd /c:*)"
+      "Bash(cmd /c:*)",
+      "Bash(timeout 30 npm run dev)",
+      "Bash(npx next:*)",
+      "Bash(del next.config.ts)"
     ],
     "deny": []
   }
