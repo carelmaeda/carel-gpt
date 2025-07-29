@@ -234,7 +234,7 @@ export default function EmailBuilder() {
                     <img 
                       src={clientData[client as keyof typeof clientData]?.logo} 
                       alt={client}
-                      className="client-logo"
+                      className="dropdown-logo"
                     />
                     {client}
                   </div>
@@ -259,7 +259,7 @@ export default function EmailBuilder() {
                         <img 
                           src={clientData[c as keyof typeof clientData]?.logo} 
                           alt={c}
-                          className="client-logo"
+                          className="dropdown-logo"
                         />
                         {c}
                       </button>
