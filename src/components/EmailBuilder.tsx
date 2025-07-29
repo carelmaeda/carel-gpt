@@ -2,32 +2,20 @@
 
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { templates, Templates, TemplateSet } from '@/data/templates';
+import { templates, Templates } from '@/data/templates';
 import { renderTemplate } from '@/lib/renderTemplate';
 
 
 export default function EmailBuilder() {
-  const typedTemplates: Templates = templates;
+  const templatesData: Templates = templates;
 
   // =============================================================================
   // CONSTANTS & STATIC DATA
   // =============================================================================
   
-  /*Client logos*/
-  const clientData = {
-    "Royal Canin": {
-      logo: "https://cdn.brandfetch.io/ide1aIn1hE/theme/dark/logo.svg"
-    },
-    "Hills Canada": {
-      logo: "https://cdn.brandfetch.io/idVKGfG_3n/w/200/h/200/theme/dark/logo.png"
-    },
-    "MARS": {
-      logo: "https://cdn.brandfetch.io/idFvQZLcOg/theme/dark/logo.svg"
-    },
-    "Nestle": {
-      logo: "https://cdn.brandfetch.io/id1xOwiSj_/theme/dark/logo.svg"
-    }
-  };
+  /** Available templates and clients from data */
+  const availableTemplates = templatesData.templates;
+  const availableClients = Object.keys(templatesData.clients);
 
   // =============================================================================
   // STATE MANAGEMENT
@@ -35,7 +23,7 @@ export default function EmailBuilder() {
 
   // Form Data States
   const [client, setClient] = useState('');
-  const [templateName, setTemplateName] = useState('');
+  const [templateName, setTemplateName] = useState('template1');
   const [emailBody, setEmailBody] = useState('');
   const [emailTitle, setEmailTitle] = useState('');
   
@@ -57,17 +45,16 @@ export default function EmailBuilder() {
   // COMPUTED VALUES & MEMOIZED DATA
   // =============================================================================
 
-  /** Get templates for selected client or return empty object */
-  const clientTemplates: TemplateSet = useMemo(() => 
-    client && typedTemplates[client] ? typedTemplates[client] : {} as TemplateSet,
-    [client, typedTemplates]
+  /** Get selected template object */
+  const selectedTemplate = useMemo(() => 
+    availableTemplates.find(t => t.id === templateName),
+    [templateName, availableTemplates]
   );
 
-  /** Filter out system templates to show only user-selectable options */
-  const templateOptions = useMemo(() => 
-    Object.keys(clientTemplates).filter(
-      (key) => key !== 'ctaTemplate' && key !== 'footerTemplate'
-    ), [clientTemplates]
+  /** Get selected client data */
+  const selectedClientData = useMemo(() => 
+    client ? templatesData.clients[client] : null,
+    [client, templatesData.clients]
   );
 
   // =============================================================================
@@ -76,15 +63,15 @@ export default function EmailBuilder() {
 
   /** Main effect: Generate HTML when form data changes */
   useEffect(() => {
-    if (!client || !templateName) {
+    if (!selectedTemplate || !selectedClientData) {
       setFinalHtml('');
       return;
     }
 
-    // Get template components
-    const baseTemplate = clientTemplates[templateName] ?? '';
-    const ctaTemplate = clientTemplates.ctaTemplate ?? '';
-    const footerTemplate = clientTemplates.footerTemplate ?? '';
+    // Get template and client-specific components
+    const baseTemplate = selectedTemplate.html;
+    const ctaTemplate = selectedClientData.ctaTemplate;
+    const footerTemplate = selectedClientData.footerTemplate;
 
     // Ensure CTA link has proper protocol
     const normalizedCtaLink = ctaLink && !ctaLink.startsWith('http') 
@@ -101,25 +88,29 @@ export default function EmailBuilder() {
     // Include footer if enabled
     const footer = includeFooter ? footerTemplate : '';
 
+    // Generate client logo HTML
+    const logoHtml = `<img src="${selectedClientData.logo}" alt="${client} Logo" width="120" height="120" style="display:block; border:0;">`;
+
     // Render final email HTML
     const html = renderTemplate(baseTemplate, {
       title: emailTitle,
       body: emailBody,
       cta_button: ctaButton,
       footer,
+      logo: logoHtml,
     });
 
     setFinalHtml(html);
   }, [
+    selectedTemplate,
+    selectedClientData,
     client,
-    templateName,
     emailTitle,
     emailBody,
     includeCTA,
     ctaText,
     ctaLink,
     includeFooter,
-    clientTemplates,
   ]); // Dependencies: re-render when any form field changes
 
   /** Auto-hide toast notifications after 3 seconds */
@@ -159,9 +150,8 @@ export default function EmailBuilder() {
       .catch(() => setShowToast({ message: 'Failed to copy HTML.', type: 'error' }));
   };
 
-  /** Clear all form fields except client selection */
-  const clearFormFields = () => {
-    setTemplateName('');
+  /** Clear content fields only (keep template and client) */
+  const clearContentFields = () => {
     setEmailBody('');
     setIncludeCTA(false);
     setCtaText('');
@@ -172,8 +162,9 @@ export default function EmailBuilder() {
 
   /** Reset entire form to initial state */
   const resetForm = () => {
+    setTemplateName('');
     setClient('');
-    clearFormFields();
+    clearContentFields();
     setShowToast({ message: 'Form reset successfully!', type: 'success' });
   };
 
@@ -214,13 +205,38 @@ export default function EmailBuilder() {
         <h2 className="mb-3">Email Generator</h2>
         <div className="row">
           {/* ===== LEFT COLUMN: FORM CONTROLS ===== */}
-          <div className="col-md-6 mb-4">
+          <div className="col-md-4 mb-4">
 
-            {/* CLIENT SELECTION DROPDOWN */}
+            {/* TEMPLATE SELECTION */}
             <div className="mb-3">
-            <label className="form-label">
-              Select Client
-            </label>
+              <label htmlFor="templateSelect" className="form-label">
+                Select Template
+              </label>
+              <select
+                id="templateSelect"
+                className="form-select"
+                value={templateName}
+                onChange={(e) => {
+                  setTemplateName(e.target.value);
+                  // Clear content fields when template changes
+                  clearContentFields();
+                }}
+              >
+                <option value="">-- Select Template --</option>
+                {availableTemplates.map((template) => (
+                  <option key={template.id} value={template.id}>
+                    {template.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* CLIENT SELECTION DROPDOWN - Only show if template is selected */}
+            {templateName && (
+              <div className="mb-3">
+                <label className="form-label">
+                  Select Client
+                </label>
             <div className="dropdown" ref={dropdownRef}>
               <button
                 className="btn btn-outline-secondary dropdown-toggle w-100 d-flex align-items-center justify-content-between"
@@ -232,7 +248,7 @@ export default function EmailBuilder() {
                   <div className="d-flex align-items-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
-                      src={clientData[client as keyof typeof clientData]?.logo} 
+                      src={templatesData.clients[client]?.logo} 
                       alt={client}
                       className="dropdown-logo"
                     />
@@ -244,20 +260,19 @@ export default function EmailBuilder() {
               </button>
               {showClientDropdown && (
                 <ul className="dropdown-menu show w-100" style={{ position: 'absolute', zIndex: 1000 }}>
-                  {Object.keys(typedTemplates).map((c) => (
+                  {availableClients.map((c) => (
                     <li key={c}>
                       <button
                         className="dropdown-item d-flex align-items-center"
                         type="button"
                         onClick={() => {
                           setClient(c);
-                          clearFormFields(); // Reset form when client changes
                           setShowClientDropdown(false);
                         }}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img 
-                          src={clientData[c as keyof typeof clientData]?.logo} 
+                          src={templatesData.clients[c]?.logo} 
                           alt={c}
                           className="dropdown-logo"
                         />
@@ -269,40 +284,10 @@ export default function EmailBuilder() {
               )}
             </div>
           </div>
+        )}
 
-            {/* TEMPLATE SELECTION */}
-            {client && (
-              <div className="mb-3">
-              <label htmlFor="templateSelect" className="form-label">
-                Select Template
-              </label>
-              <select
-                id="templateSelect"
-                className="form-select"
-                value={templateName}
-                onChange={(e) => {
-                  setTemplateName(e.target.value);
-                  // Clear all email fields when template changes
-                  setEmailBody('');
-                  setIncludeCTA(false);
-                  setCtaText('');
-                  setCtaLink('');
-                  setIncludeFooter(false);
-                  setFinalHtml('');
-                }}
-              >
-                <option value="">-- Select Template --</option>
-                {templateOptions.map((name) => (
-                  <option key={name} value={name}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {/* EMAIL CONTENT FIELDS */}
-          {templateName && (
+          {/* EMAIL CONTENT FIELDS - Only show when both template and client are selected */}
+          {templateName && client && (
             <>
               {/* Email Title */}
               <div className="mb-3">
@@ -330,7 +315,7 @@ export default function EmailBuilder() {
                   value={emailBody}
                   onEditorChange={(content) => setEmailBody(content)}
                   init={{
-                    height: 200,
+                    height: 300,
                     menubar: false,
                     statusbar: true,
                     placeholder: 'Enter your email content here. You can add text, links, images, and format your message...',
@@ -418,7 +403,7 @@ export default function EmailBuilder() {
         </div>
 
         {/* ===== RIGHT COLUMN: PREVIEW & ACTIONS ===== */}
-        <div className="col-md-6">
+        <div className="col-md-8">
           
           {/* LIVE EMAIL PREVIEW */}
           <h5>Live Preview</h5>
@@ -428,8 +413,8 @@ export default function EmailBuilder() {
           />
 
           {/* ACTION BUTTONS */}
-          {templateName && (
-            <div className="d-flex gap-2">
+          {templateName && client && (
+            <div className="d-flex justify-content-end gap-2">
               <button
                 className="btn btn-outline-danger"
                 onClick={resetForm}
@@ -437,18 +422,18 @@ export default function EmailBuilder() {
                 Reset Form
               </button>
               <button
-                className="btn btn-primary"
-                onClick={copyToClipboard}
-                disabled={!finalHtml}
-              >
-                Copy HTML
-              </button>
-              <button
                 className="btn btn-secondary"
                 onClick={downloadHtml}
                 disabled={!finalHtml}
               >
                 Download HTML
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={copyToClipboard}
+                disabled={!finalHtml}
+              >
+                Copy HTML
               </button>
             </div>
           )}

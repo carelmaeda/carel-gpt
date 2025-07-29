@@ -1,7 +1,7 @@
 
 export function renderTemplate(
   template: string,
-  values: { title?: string; header?: string; body: string; cta_button: string; footer: string }
+  values: { title?: string; header?: string; body: string; cta_button: string; footer: string; logo?: string }
 ) {
   let renderedTemplate = template;
 
@@ -10,5 +10,6 @@ export function renderTemplate(
   renderedTemplate = renderedTemplate.replace(/{{body}}/g, values.body || '');
   renderedTemplate = renderedTemplate.replace(/{{cta_button}}/g, values.cta_button || '');
   renderedTemplate = renderedTemplate.replace(/{{footer}}/g, values.footer || '');
+  renderedTemplate = renderedTemplate.replace(/{{logo}}/g, values.logo || '');
   return renderedTemplate;
 }
