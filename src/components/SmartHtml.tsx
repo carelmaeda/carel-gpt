@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface EditableTextNode {
   id: string;
@@ -16,6 +16,14 @@ export default function SmartHtml() {
   const [modifiedHtml, setModifiedHtml] = useState<string>('');
   const [showToast, setShowToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-hide toast notifications after 5 seconds
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => setShowToast(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
 
   // Handle file upload
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -236,7 +244,7 @@ export default function SmartHtml() {
       {/* Toast Notifications */}
       {showToast && (
         <div
-          className={`toast align-items-center text-white bg-${showToast.type} border-0 show position-fixed bottom-0 end-0 m-3`}
+          className={`toast align-items-center text-white bg-${showToast.type} border-0 show position-fixed top-0 end-0 m-3`}
           role="alert"
           aria-live="assertive"
           aria-atomic="true"

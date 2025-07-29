@@ -113,10 +113,10 @@ export default function EmailBuilder() {
     includeFooter,
   ]); // Dependencies: re-render when any form field changes
 
-  /** Auto-hide toast notifications after 3 seconds */
+  /** Auto-hide toast notifications after 5 seconds */
   useEffect(() => {
     if (showToast) {
-      const timer = setTimeout(() => setShowToast(null), 3000);
+      const timer = setTimeout(() => setShowToast(null), 5000);
       return () => clearTimeout(timer);
     }
   }, [showToast]);
@@ -447,7 +447,7 @@ export default function EmailBuilder() {
       {/* ===== TOAST NOTIFICATIONS ===== */}
       {showToast && (
         <div
-          className={`toast align-items-center text-white bg-${showToast.type} border-0 show position-fixed bottom-0 end-0 m-3`}
+          className={`toast align-items-center text-white bg-${showToast.type} border-0 show position-fixed top-0 end-0 m-3`}
           role="alert"
           aria-live="assertive"
           aria-atomic="true"
