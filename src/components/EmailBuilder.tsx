@@ -230,10 +230,11 @@ export default function EmailBuilder() {
               >
                 {client ? (
                   <div className="d-flex align-items-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img 
                       src={clientData[client as keyof typeof clientData]?.logo} 
                       alt={client}
-                      className="dropdown-logo"
+                      className="client-logo"
                     />
                     {client}
                   </div>
@@ -254,10 +255,11 @@ export default function EmailBuilder() {
                           setShowClientDropdown(false);
                         }}
                       >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img 
                           src={clientData[c as keyof typeof clientData]?.logo} 
                           alt={c}
-                          className="dropdown-logo"
+                          className="client-logo"
                         />
                         {c}
                       </button>
@@ -341,7 +343,7 @@ export default function EmailBuilder() {
                     content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; font-size:14px }',
                     skin: 'oxide',
                     // Image handling configuration
-                    images_upload_handler: (blobInfo: any) => {
+                    images_upload_handler: (blobInfo: { blob: () => Blob }) => {
                       return new Promise((resolve, reject) => {
                         // Convert image to base64 data URL for embedding
                         const reader = new FileReader();

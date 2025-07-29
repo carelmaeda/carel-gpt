@@ -81,7 +81,12 @@ function Sidebar({ collapsed, mobileOpen }: SidebarProps) {
   const isActive = (href: string, exact: boolean) => {
     const normalizedPathname = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname
     const normalizedHref = href.endsWith('/') ? href.slice(0, -1) : href
-    return normalizedPathname === normalizedHref
+    
+    if (exact) {
+      return normalizedPathname === normalizedHref
+    }
+    
+    return normalizedPathname.startsWith(normalizedHref)
   }
 
   return (
