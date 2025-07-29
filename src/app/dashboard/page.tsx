@@ -24,14 +24,14 @@ export default function DashboardPage() {
             </div>
             
             <div className="col-md-6">
-              <div className="card border-secondary">
+              <div className="card border-primary">
                 <div className="card-body text-center">
-                  <i className="bi bi-plus-circle text-secondary mb-3" style={{fontSize: '2rem'}}></i>
-                  <h5 className="card-title">More Features Coming Soon</h5>
-                  <p className="card-text">Additional tools and features will be added here</p>
-                  <button className="btn btn-secondary" disabled>
-                    Coming Soon
-                  </button>
+                  <i className="bi bi-lightning-fill text-primary mb-3" style={{fontSize: '2rem'}}></i>
+                  <h5 className="card-title">Smart HTML</h5>
+                  <p className="card-text">Upload HTML files and edit text content with live preview</p>
+                  <a href="/smart-html" className="btn btn-primary">
+                    Open Smart HTML
+                  </a>
                 </div>
               </div>
             </div>
