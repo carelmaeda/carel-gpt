@@ -75,6 +75,12 @@ function Sidebar({ collapsed, mobileOpen }: SidebarProps) {
       icon: 'bi-envelope-at',
       label: 'Email Generator',
       exact: true
+    },
+    {
+      href: '/smart-html',
+      icon: 'bi-lightning-fill',
+      label: 'Smart HTML',
+      exact: true
     }
   ]
 
