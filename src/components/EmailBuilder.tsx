@@ -1,65 +1,109 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { templates, Templates, TemplateSet } from '@/data/templates';
 import { renderTemplate } from '@/lib/renderTemplate';
 
+
 export default function EmailBuilder() {
-  // Typed templates for TypeScript safety
   const typedTemplates: Templates = templates;
 
-  const [client, setClient] = useState<string>('');
-  const [templateName, setTemplateName] = useState<string>('');
-  const [emailBody, setEmailBody] = useState<string>('');
-  const [emailTitle, setEmailTitle] = useState<string>(''); 
-  const [emailHeader, setEmailHeader] = useState<string>('');
-  const [includeCTA, setIncludeCTA] = useState<boolean>(false);
-  const [ctaText, setCtaText] = useState<string>('');
-  const [ctaLink, setCtaLink] = useState<string>('');
-  const [includeFooter, setIncludeFooter] = useState<boolean>(false);
-  const [finalHtml, setFinalHtml] = useState<string>('');
-  const [showToast, setShowToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  // =============================================================================
+  // CONSTANTS & STATIC DATA
+  // =============================================================================
+  
+  /*Client logos*/
+  const clientData = {
+    "Royal Canin": {
+      logo: "https://cdn.brandfetch.io/ide1aIn1hE/theme/dark/logo.svg"
+    },
+    "Hills Canada": {
+      logo: "https://cdn.brandfetch.io/idVKGfG_3n/w/200/h/200/theme/dark/logo.png"
+    },
+    "MARS": {
+      logo: "https://cdn.brandfetch.io/idFvQZLcOg/theme/dark/logo.svg"
+    },
+    "Nestle": {
+      logo: "https://cdn.brandfetch.io/id1xOwiSj_/theme/dark/logo.svg"
+    }
+  };
 
-  // Get templates for selected client or empty
+  // =============================================================================
+  // STATE MANAGEMENT
+  // =============================================================================
+
+  // Form Data States
+  const [client, setClient] = useState('');
+  const [templateName, setTemplateName] = useState('');
+  const [emailBody, setEmailBody] = useState('');
+  const [emailTitle, setEmailTitle] = useState('');
+  
+  // Optional Features States
+  const [includeCTA, setIncludeCTA] = useState(false);
+  const [ctaText, setCtaText] = useState('');
+  const [ctaLink, setCtaLink] = useState('');
+  const [includeFooter, setIncludeFooter] = useState(false);
+  
+  // UI & Output States
+  const [finalHtml, setFinalHtml] = useState('');
+  const [showToast, setShowToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [showClientDropdown, setShowClientDropdown] = useState(false);
+  
+  // Refs
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // =============================================================================
+  // COMPUTED VALUES & MEMOIZED DATA
+  // =============================================================================
+
+  /** Get templates for selected client or return empty object */
   const clientTemplates: TemplateSet = useMemo(() => 
     client && typedTemplates[client] ? typedTemplates[client] : {} as TemplateSet,
     [client, typedTemplates]
   );
 
-  // Filter template keys (exclude CTA/footer templates)
-  const templateOptions = Object.keys(clientTemplates).filter(
-    (key) => key !== 'ctaTemplate' && key !== 'footerTemplate'
+  /** Filter out system templates to show only user-selectable options */
+  const templateOptions = useMemo(() => 
+    Object.keys(clientTemplates).filter(
+      (key) => key !== 'ctaTemplate' && key !== 'footerTemplate'
+    ), [clientTemplates]
   );
 
+  // =============================================================================
+  // EFFECTS & SIDE-EFFECTS
+  // =============================================================================
+
+  /** Main effect: Generate HTML when form data changes */
   useEffect(() => {
     if (!client || !templateName) {
       setFinalHtml('');
       return;
     }
 
+    // Get template components
     const baseTemplate = clientTemplates[templateName] ?? '';
     const ctaTemplate = clientTemplates.ctaTemplate ?? '';
     const footerTemplate = clientTemplates.footerTemplate ?? '';
 
-    // Normalize CTA link so href is absolute
-    const normalizedCtaLink =
-      ctaLink.startsWith('http://') || ctaLink.startsWith('https://')
-        ? ctaLink
-        : `https://${ctaLink}`;
+    // Ensure CTA link has proper protocol
+    const normalizedCtaLink = ctaLink && !ctaLink.startsWith('http') 
+      ? `https://${ctaLink}` 
+      : ctaLink;
 
-    const ctaButton =
-      includeCTA && ctaText && ctaLink
-        ? ctaTemplate
-            .replace('{{cta_text}}', ctaText)
-            .replace('{{cta_link}}', normalizedCtaLink)
-        : '';
+    // Generate CTA button HTML if enabled and configured
+    const ctaButton = includeCTA && ctaText && ctaLink
+      ? ctaTemplate
+          .replace('{{cta_text}}', ctaText)
+          .replace('{{cta_link}}', normalizedCtaLink)
+      : '';
 
+    // Include footer if enabled
     const footer = includeFooter ? footerTemplate : '';
 
+    // Render final email HTML
     const html = renderTemplate(baseTemplate, {
       title: emailTitle,
-      header: emailHeader,
       body: emailBody,
       cta_button: ctaButton,
       footer,
@@ -71,24 +115,40 @@ export default function EmailBuilder() {
     templateName,
     emailTitle,
     emailBody,
-    emailHeader,
     includeCTA,
     ctaText,
     ctaLink,
     includeFooter,
     clientTemplates,
-  ]);
+  ]); // Dependencies: re-render when any form field changes
 
-  // Hide the toast after a few seconds
+  /** Auto-hide toast notifications after 3 seconds */
   useEffect(() => {
     if (showToast) {
-      const timer = setTimeout(() => {
-        setShowToast(null);
-      }, 3000); // Hide after 3 seconds
+      const timer = setTimeout(() => setShowToast(null), 3000);
       return () => clearTimeout(timer);
     }
   }, [showToast]);
 
+  /** Close dropdown when clicking outside - only active when dropdown is open */
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowClientDropdown(false);
+      }
+    };
+
+    if (showClientDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showClientDropdown]);
+
+  // =============================================================================
+  // EVENT HANDLERS & UTILITY FUNCTIONS
+  // =============================================================================
+
+  /** Copy generated HTML to clipboard */
   const copyToClipboard = () => {
     if (!finalHtml) {
       setShowToast({ message: 'No HTML to copy!', type: 'error' });
@@ -99,35 +159,44 @@ export default function EmailBuilder() {
       .catch(() => setShowToast({ message: 'Failed to copy HTML.', type: 'error' }));
   };
 
-  const resetForm = () => {
-    setClient('');
+  /** Clear all form fields except client selection */
+  const clearFormFields = () => {
     setTemplateName('');
     setEmailBody('');
-    setEmailTitle('');
-    setEmailHeader('');
     setIncludeCTA(false);
     setCtaText('');
     setCtaLink('');
     setIncludeFooter(false);
     setFinalHtml('');
+  };
+
+  /** Reset entire form to initial state */
+  const resetForm = () => {
+    setClient('');
+    clearFormFields();
     setShowToast({ message: 'Form reset successfully!', type: 'success' });
   };
 
+  /** Download generated HTML as a file */
   const downloadHtml = () => {
     if (!finalHtml) {
       setShowToast({ message: 'No HTML to download!', type: 'error' });
       return;
     }
     try {
+      // Create blob and download link
       const blob = new Blob([finalHtml], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${client || 'unknown'}-${templateName || 'email'}.html`; // More robust filename
-      document.body.appendChild(a); // Append to body to ensure visibility and clickability in all browsers
+      a.download = `${client || 'unknown'}-${templateName || 'email'}.html`;
+      
+      // Trigger download
+      document.body.appendChild(a);
       a.click();
-      document.body.removeChild(a); // Clean up
+      document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      
       setShowToast({ message: 'HTML downloaded successfully!', type: 'success' });
     } catch (error) {
       setShowToast({ message: 'Failed to download HTML.', type: 'error' });
@@ -135,45 +204,73 @@ export default function EmailBuilder() {
     }
   };
 
+  // =============================================================================
+  // RENDER
+  // =============================================================================
+
   return (
-    <div className="container">
-      <h2 className="mb-0">Email Generator</h2>
-      <div className="row">
-        {/* Form Section */}
-        <div className="col-md-6 mb-4">
-          {/* Client Selector */}
-          <div className="mb-3">
-            <label htmlFor="clientSelect" className="form-label">
+    <>
+      <div className="container">
+        <h2 className="mb-3">Email Generator</h2>
+        <div className="row">
+          {/* ===== LEFT COLUMN: FORM CONTROLS ===== */}
+          <div className="col-md-6 mb-4">
+
+            {/* CLIENT SELECTION DROPDOWN */}
+            <div className="mb-3">
+            <label className="form-label">
               Select Client
             </label>
-            <select
-              id="clientSelect"
-              className="form-select"
-              value={client}
-              onChange={(e) => {
-                setClient(e.target.value);
-                setTemplateName('');
-                setEmailBody(''); // Clear email body on client change
-                setEmailHeader(''); // Clear email header on client change
-                setIncludeCTA(false); // Reset CTA on client change
-                setCtaText(''); // Reset CTA text on client change
-                setCtaLink(''); // Reset CTA link on client change
-                setIncludeFooter(false); // Reset footer on client change
-                setFinalHtml('');
-              }}
-            >
-              <option value="">-- Select Client --</option>
-              {Object.keys(typedTemplates).map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
+            <div className="dropdown" ref={dropdownRef}>
+              <button
+                className="btn btn-outline-secondary dropdown-toggle w-100 d-flex align-items-center justify-content-between"
+                type="button"
+                onClick={() => setShowClientDropdown(!showClientDropdown)}
+                style={{ textAlign: 'left' }}
+              >
+                {client ? (
+                  <div className="d-flex align-items-center">
+                    <img 
+                      src={clientData[client as keyof typeof clientData]?.logo} 
+                      alt={client}
+                      className="dropdown-logo"
+                    />
+                    {client}
+                  </div>
+                ) : (
+                  '-- Select Client --'
+                )}
+              </button>
+              {showClientDropdown && (
+                <ul className="dropdown-menu show w-100" style={{ position: 'absolute', zIndex: 1000 }}>
+                  {Object.keys(typedTemplates).map((c) => (
+                    <li key={c}>
+                      <button
+                        className="dropdown-item d-flex align-items-center"
+                        type="button"
+                        onClick={() => {
+                          setClient(c);
+                          clearFormFields(); // Reset form when client changes
+                          setShowClientDropdown(false);
+                        }}
+                      >
+                        <img 
+                          src={clientData[c as keyof typeof clientData]?.logo} 
+                          alt={c}
+                          className="dropdown-logo"
+                        />
+                        {c}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
 
-          {/* Template Selector */}
-          {client && (
-            <div className="mb-3">
+            {/* TEMPLATE SELECTION */}
+            {client && (
+              <div className="mb-3">
               <label htmlFor="templateSelect" className="form-label">
                 Select Template
               </label>
@@ -183,12 +280,12 @@ export default function EmailBuilder() {
                 value={templateName}
                 onChange={(e) => {
                   setTemplateName(e.target.value);
-                  setEmailBody(''); // Clear email body on template change
-                  setEmailHeader(''); // Clear email header on template change
-                  setIncludeCTA(false); // Reset CTA on template change
-                  setCtaText(''); // Reset CTA text on template change
-                  setCtaLink(''); // Reset CTA link on template change
-                  setIncludeFooter(false); // Reset footer on template change
+                  // Clear all email fields when template changes
+                  setEmailBody('');
+                  setIncludeCTA(false);
+                  setCtaText('');
+                  setCtaLink('');
+                  setIncludeFooter(false);
                   setFinalHtml('');
                 }}
               >
@@ -202,10 +299,10 @@ export default function EmailBuilder() {
             </div>
           )}
 
-          {/* Email Body & Options */}
+          {/* EMAIL CONTENT FIELDS */}
           {templateName && (
             <>
-                {/*Title Input */}
+              {/* Email Title */}
               <div className="mb-3">
                 <label htmlFor="emailTitle" className="form-label">
                   Email Title 
@@ -219,22 +316,8 @@ export default function EmailBuilder() {
                   placeholder="Enter Header (e.g: 'Big News!')"
                 />
               </div>
-              
-              {/*Header Input */}
-              <div className="mb-3">
-                <label htmlFor="emailHeader" className="form-label">
-                  Email Header
-                </label>
-                <input
-                  type="text"
-                  id="emailHeader"
-                  className="form-control"
-                  value={emailHeader}
-                  onChange={(e) => setEmailHeader(e.target.value)}
-                  placeholder="Enter Header (e.g: 'Dear Sales Rep,')"
-                />
-              </div>
 
+              {/* Rich Text Email Body */}
               <div className="mb-3">
                 <label htmlFor="emailBody" className="form-label">
                   Email Body
@@ -247,18 +330,41 @@ export default function EmailBuilder() {
                   init={{
                     height: 200,
                     menubar: false,
+                    statusbar: true,
+                    placeholder: 'Enter your email content here. You can add text, links, images, and format your message...',
                     plugins: [
-                      'advlist', 'autolink', 'lists', 'link', 'charmap',
+                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
                       'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
                       'insertdatetime', 'table', 'help', 'wordcount'
                     ],
-                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link | removeformat | help',
+                    toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | link image | fullscreen | removeformat | help',
                     content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; font-size:14px }',
-                    skin: 'oxide'
+                    skin: 'oxide',
+                    // Image handling configuration
+                    images_upload_handler: (blobInfo: any) => {
+                      return new Promise((resolve, reject) => {
+                        // Convert image to base64 data URL for embedding
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          resolve(reader.result as string);
+                        };
+                        reader.onerror = () => {
+                          reject('Failed to convert image');
+                        };
+                        reader.readAsDataURL(blobInfo.blob());
+                      });
+                    },
+                    images_upload_base_path: '',
+                    automatic_uploads: true,
+                    paste_data_images: true,
+                    image_advtab: true,
+                    image_caption: true,
+                    image_title: true
                   }}
                 />
               </div>
 
+              {/* CTA BUTTON CONFIGURATION */}
               <div className="form-check mb-2">
                 <input
                   type="checkbox"
@@ -272,6 +378,7 @@ export default function EmailBuilder() {
                 </label>
               </div>
 
+              {/* CTA Input Fields - only shown when enabled */}
               {includeCTA && (
                 <>
                   <input
@@ -291,6 +398,7 @@ export default function EmailBuilder() {
                 </>
               )}
 
+              {/* FOOTER CONFIGURATION */}
               <div className="form-check mb-3">
                 <input
                   type="checkbox"
@@ -307,18 +415,20 @@ export default function EmailBuilder() {
           )}
         </div>
 
-        {/* Live Preview */}
+        {/* ===== RIGHT COLUMN: PREVIEW & ACTIONS ===== */}
         <div className="col-md-6">
+          
+          {/* LIVE EMAIL PREVIEW */}
           <h5>Live Preview</h5>
           <div
             className="border p-3 bg-white mb-3 rounded preview-wrapper"
             dangerouslySetInnerHTML={{ __html: finalHtml }}
           />
 
-          {/*Buttons */}
+          {/* ACTION BUTTONS */}
           {templateName && (
             <div className="d-flex gap-2">
-               <button
+              <button
                 className="btn btn-outline-danger"
                 onClick={resetForm}
               >
@@ -343,7 +453,7 @@ export default function EmailBuilder() {
         </div>
       </div>
 
-      {/* Toast Notification */}
+      {/* ===== TOAST NOTIFICATIONS ===== */}
       {showToast && (
         <div
           className={`toast align-items-center text-white bg-${showToast.type} border-0 show position-fixed bottom-0 end-0 m-3`}
@@ -365,6 +475,7 @@ export default function EmailBuilder() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

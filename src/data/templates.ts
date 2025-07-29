@@ -270,7 +270,7 @@ export const templates: Templates = {
           <!-- Logo -->
           <tr>
             <td align="center" style="padding:16px;">
-              <img src="https://cdn.brandfetch.io/id1xOwiSj_/theme/dark/logo.svg" alt="Logo" width="120" height="120" style="display:block; border:0;">
+              <img src="https://cdn.brandfetch.io/id1xOwiSj_/theme/dark/logo.svg" alt="Logo" width="100" height="100" style="display:block; border:0;">
             </td>
           </tr>
 
