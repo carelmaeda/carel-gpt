@@ -209,26 +209,31 @@ export default function EmailBuilder() {
 
             {/* TEMPLATE SELECTION */}
             <div className="mb-3">
-              <label htmlFor="templateSelect" className="form-label">
+              <label className="form-label">
                 Select Template
               </label>
-              <select
-                id="templateSelect"
-                className="form-select"
-                value={templateName}
-                onChange={(e) => {
-                  setTemplateName(e.target.value);
-                  // Clear content fields when template changes
-                  clearContentFields();
-                }}
-              >
-                <option value="">-- Select Template --</option>
-                {availableTemplates.map((template) => (
-                  <option key={template.id} value={template.id}>
-                    {template.name}
-                  </option>
-                ))}
-              </select>
+              <div className="form-radio border">
+                <input
+                  type="radio"
+                  id="template1"
+                  name="templateSelect"
+                  disabled
+                  value="template1"
+                  checked={templateName === 'template1'}
+                  onChange={(e) => {
+                    setTemplateName(e.target.value);
+                    // Clear content fields when template changes
+                    clearContentFields();
+                  }}
+                />
+                <label htmlFor="template1" className='d-grid'>
+                  <small className='text-primary'>Template 1</small>
+                  <hr className='m-1 p-0'/>
+                  <small>Logo</small>
+                  <small>Title</small>
+                  <small>Body</small>
+                </label>
+              </div>
             </div>
 
             {/* CLIENT SELECTION DROPDOWN - Only show if template is selected */}
@@ -239,7 +244,7 @@ export default function EmailBuilder() {
                 </label>
             <div className="dropdown" ref={dropdownRef}>
               <button
-                className="btn btn-outline-secondary dropdown-toggle w-100 d-flex align-items-center justify-content-between"
+                className="btn border dropdown-toggle w-100 d-flex align-items-center justify-content-between"
                 type="button"
                 onClick={() => setShowClientDropdown(!showClientDropdown)}
                 style={{ textAlign: 'left' }}
@@ -403,8 +408,7 @@ export default function EmailBuilder() {
         </div>
 
         {/* ===== RIGHT COLUMN: PREVIEW & ACTIONS ===== */}
-        <div className="col-md-8">
-          
+        <div className="col-md-8 preview-container">
           {/* LIVE EMAIL PREVIEW */}
           <h5>Live Preview</h5>
           <div
@@ -414,7 +418,7 @@ export default function EmailBuilder() {
 
           {/* ACTION BUTTONS */}
           {templateName && client && (
-            <div className="d-flex justify-content-end gap-2">
+            <div className="btn-row">
               <button
                 className="btn btn-outline-danger"
                 onClick={resetForm}

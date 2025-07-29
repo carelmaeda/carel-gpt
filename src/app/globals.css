@@ -1,6 +1,16 @@
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .preview-wrapper {
+  flex: 1;
+  width: 100%;
   overflow-y: auto;
   white-space: normal;
+  background: #f4f4f4;
 }
 
 .dropdown-item:hover {
@@ -15,24 +25,6 @@
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
-.dropdown-logo {
-  width: 20px;
-  height: 20px;
-  -o-object-fit: contain;
-     object-fit: contain;
-  margin-right: 8px;
-  flex-shrink: 0;
-}
-
-.dropdown-button-left-align {
-  text-align: left;
-}
-
-.dropdown-menu-absolute {
-  position: absolute;
-  z-index: 1000;
-}
-
 .dropdown-item {
   padding: 0.5rem 1rem;
   border: none;
@@ -45,4 +37,60 @@
 .dropdown-item:focus {
   background-color: #f8f9fa;
   outline: none;
+}
+
+.dropdown-logo {
+  width: 20px;
+  height: 20px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.form-radio {
+  border: 1px solid #6c757d;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  position: relative;
+  width: -moz-max-content;
+  width: max-content;
+}
+.form-radio label {
+  padding-left: 1.5rem;
+  cursor: pointer;
+}
+.form-radio input {
+  position: absolute;
+  top: 0.75rem;
+  margin: 0;
+}
+
+.btn-outline-danger {
+  background-color: #f4f4f4;
+}
+
+.btn-row {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 1rem;
+  margin: 1rem 2rem;
+  background: white;
+  border-radius: 8px;
+  display: flex;
+  border: solid 1px #dee2e6;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .btn-row {
+    position: relative;
+    width: 100%;
+    display: grid;
+    padding: 0;
+    border: none !important;
+    margin: 0;
+  }
 }/*# sourceMappingURL=globals.css.map */
