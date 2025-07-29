@@ -210,7 +210,7 @@ export default function EmailBuilder() {
 
   return (
     <>
-      <div className="container">
+      <div className="container-fluid">
         <h2 className="mb-3">Email Generator</h2>
         <div className="row">
           {/* ===== LEFT COLUMN: FORM CONTROLS ===== */}
@@ -421,7 +421,7 @@ export default function EmailBuilder() {
           {/* LIVE EMAIL PREVIEW */}
           <h5>Live Preview</h5>
           <div
-            className="border p-3 bg-white mb-3 rounded preview-wrapper"
+            className="border mb-3 rounded preview-wrapper"
             dangerouslySetInnerHTML={{ __html: finalHtml }}
           />
 

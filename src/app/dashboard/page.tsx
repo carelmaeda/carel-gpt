@@ -3,6 +3,7 @@ import { Layout } from '@/components/Sidebar'
 export default function DashboardPage() {
   return (
     <Layout>
+      <div className="container-fluid">
           <h2 className="card-title">Welcome</h2>
           <p className="card-text">
             How can I help you today?
@@ -35,6 +36,8 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+      </div>
+
       </Layout>
   )
 }
