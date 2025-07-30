@@ -4,6 +4,13 @@ const nextConfig = {
   trailingSlash: true,
   images: {
     unoptimized: true
+  },
+  // Disable telemetry to avoid trace file issues
+  telemetry: false,
+  // Experimental features to help with Windows issues
+  experimental: {
+    // Reduce file system polling
+    optimizePackageImports: [],
   }
 }
 

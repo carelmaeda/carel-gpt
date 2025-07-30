@@ -38,7 +38,7 @@ export default function MagicLinkForm() {
       <div className="card-body">
         <h2 className="card-title">Sign in with Magic Link</h2>
         <p className="card-text text-muted">
-          Enter your email and we'll send you a secure link to sign in
+          Enter your email and we&apos;ll send you a secure link to sign in
         </p>
         
         {error && (

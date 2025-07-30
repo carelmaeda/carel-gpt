@@ -30,7 +30,7 @@ export default function AuthCallback() {
         const maxAttempts = 10
         
         const checkSession = async () => {
-          const { data: { session }, error } = await supabase.auth.getSession()
+          const { data: { session } } = await supabase.auth.getSession()
           
           if (session) {
             console.log('Session found, redirecting to dashboard')

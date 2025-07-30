@@ -28,7 +28,12 @@
       "Bash(cmd /c:*)",
       "Bash(timeout 30 npm run dev)",
       "Bash(npx next:*)",
-      "Bash(del next.config.ts)"
+      "Bash(del next.config.ts)",
+      "Bash(timeout 120 npm run build)",
+      "Bash(ls:*)",
+      "Bash(npm cache clean:*)",
+      "Bash(mv:*)",
+      "Bash(timeout 45 npm run dev)"
     ],
     "deny": []
   }

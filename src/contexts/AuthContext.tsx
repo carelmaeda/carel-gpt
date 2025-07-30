@@ -25,7 +25,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const getSession = async () => {
       // Check for auth tokens in URL first
-      const { data, error } = await supabase.auth.getSession()
+      const { data } = await supabase.auth.getSession()
       if (data.session) {
         setSession(data.session)
         setUser(data.session.user)

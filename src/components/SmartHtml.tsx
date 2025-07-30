@@ -220,7 +220,7 @@ export default function SmartHtml() {
                 <div className="text-center p-3">
                   <i className="bi bi-plus fs-1 text-muted mb-2"></i>
                   <p className="mb-1">
-                    <strong>Click to browse</strong> or drop it like it's hot.
+                    <strong>Click to browse</strong> or drop it like it&apos;s hot.
                   </p>
                   <small className="text-muted">HTML files only</small>
                 </div>
