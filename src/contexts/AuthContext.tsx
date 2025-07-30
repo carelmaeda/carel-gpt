@@ -57,8 +57,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(session?.user ?? null)
         setLoading(false)
         
-        // Redirect to dashboard on successful sign in
-        if (event === 'SIGNED_IN' && session) {
+        // Only redirect to dashboard on initial sign in, not on token refresh
+        // Check if we're already on a protected page to avoid unwanted redirects
+        const currentPath = window.location.pathname
+        const isOnProtectedPage = currentPath.startsWith('/dashboard') || 
+                                currentPath.startsWith('/email-generator') || 
+                                currentPath.startsWith('/smart-html')
+        
+        if (event === 'SIGNED_IN' && session && !isOnProtectedPage) {
+          console.log('Redirecting to dashboard from:', currentPath)
           router.push('/dashboard')
         }
       }

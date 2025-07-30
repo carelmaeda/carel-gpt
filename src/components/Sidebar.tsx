@@ -14,6 +14,7 @@ export function Layout({ children }: LayoutProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
+
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">

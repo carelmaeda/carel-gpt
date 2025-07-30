@@ -26,6 +26,33 @@ export default function SmartHtml() {
     }
   }, [showToast]);
 
+  // Prevent default browser file drop behavior only outside the drop zone
+  useEffect(() => {
+    const preventDefaults = (e: DragEvent) => {
+      // Check if the event is happening within the drop zone
+      const target = e.target as HTMLElement;
+      const dropZone = target.closest('.file-upload-zone');
+      
+      if (!dropZone) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === 'drop') {
+          e.dataTransfer!.effectAllowed = 'none';
+          e.dataTransfer!.dropEffect = 'none';
+        }
+      }
+    };
+
+    // Add listeners to document to prevent default behavior outside drop zone
+    document.addEventListener('dragover', preventDefaults);
+    document.addEventListener('drop', preventDefaults);
+
+    return () => {
+      document.removeEventListener('dragover', preventDefaults);
+      document.removeEventListener('drop', preventDefaults);
+    };
+  }, []);
+
   // Handle file processing (common for upload and drop)
   const processFile = async (file: File) => {
     if (!file || file.type !== 'text/html') {
@@ -54,8 +81,17 @@ export default function SmartHtml() {
     }
   };
 
-  // Handle drag and drop events
+  // Handle drag and drop events on the drop zone specifically
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    console.log('🎯 DROP ZONE: Drag over');
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDragOver(true);
+    // Allow drop in this zone
+    event.dataTransfer.dropEffect = 'copy';
+  };
+
+  const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
     setIsDragOver(true);
@@ -64,17 +100,29 @@ export default function SmartHtml() {
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    setIsDragOver(false);
+    // Only set drag over to false if we're actually leaving the drop zone
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX;
+    const y = event.clientY;
+    
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+      setIsDragOver(false);
+    }
   };
 
   const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    console.log('🎯 DROP ZONE: Drop event triggered!');
     event.preventDefault();
     event.stopPropagation();
     setIsDragOver(false);
 
     const files = Array.from(event.dataTransfer.files);
+    console.log('🎯 DROP ZONE: Files received:', files.length);
     if (files.length > 0) {
+      console.log('🎯 DROP ZONE: Processing file:', files[0].name, files[0].type);
       await processFile(files[0]);
+    } else {
+      console.log('🎯 DROP ZONE: No files in drop event');
     }
   };
 
@@ -190,7 +238,7 @@ export default function SmartHtml() {
 
   return (
     <>
-      <div className="container-fluid">
+      <div className="container-fluid" data-component="smart-html">
         <h2 className="mb-3">Smart HTML Editor</h2>
         <div className="row">
           
@@ -204,6 +252,7 @@ export default function SmartHtml() {
               </label>
               <div
                 className={`file-upload-zone ${isDragOver ? 'drag-over' : ''}`}
+                onDragEnter={handleDragEnter}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}

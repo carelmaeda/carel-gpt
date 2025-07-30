@@ -71,15 +71,11 @@
 }
 
 .btn-row {
-  position: absolute;
-  bottom: 0;
-  right: 0;
   padding: 1rem;
-  margin: 1rem 2rem;
   background: white;
   border-radius: 8px;
   display: flex;
-  border: solid 1px #dee2e6;
+  justify-content: end;
   gap: 1rem;
 }
 
