@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
@@ -11,9 +11,25 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const { user, loading } = useAuth()
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
 
+  // Initialize sidebar state based on screen size
+  useEffect(() => {
+    const desktop = window.innerWidth >= 768
+    setIsDesktop(desktop)
+    
+    // Set initial state based on screen size
+    setIsSidebarOpen(desktop) // Expanded on desktop, collapsed on mobile
+    
+    // Listen for window resize but don't auto-reset state
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768)
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, []) // Empty dependency array to run only on mount
 
   if (loading) {
     return (
@@ -33,21 +49,21 @@ export function Layout({ children }: LayoutProps) {
   }
 
   const toggleSidebar = () => {
-    // On desktop, toggle collapse. On mobile, toggle open/close
-    const isDesktop = window.innerWidth >= 768
-    if (isDesktop) {
-      setSidebarCollapsed(!sidebarCollapsed)
-    } else {
-      setSidebarOpen(!sidebarOpen)
-    }
+    setIsSidebarOpen(!isSidebarOpen)
   }
 
   return (
     <div className="d-flex flex-column vh-100">
-      <Toolbar onMenuClick={toggleSidebar} sidebarCollapsed={sidebarCollapsed} />
+      <Toolbar onMenuClick={toggleSidebar} sidebarCollapsed={!isSidebarOpen} />
       <div className="d-flex flex-grow-1 overflow-hidden">
-        <Sidebar collapsed={sidebarCollapsed} mobileOpen={sidebarOpen} />
-        <main className="flex-grow-1 p-4 overflow-auto">
+        <Sidebar 
+          isOpen={isSidebarOpen} 
+          isDesktop={isDesktop}
+          onClose={() => setIsSidebarOpen(false)} 
+        />
+        <main className={`flex-grow-1 p-4 overflow-auto transition-margin ${
+          isDesktop && isSidebarOpen ? 'main-with-sidebar' : 'main-full-width'
+        }`}>
           {children}
         </main>
       </div>
@@ -56,11 +72,12 @@ export function Layout({ children }: LayoutProps) {
 }
 
 interface SidebarProps {
-  collapsed: boolean
-  mobileOpen: boolean
+  isOpen: boolean
+  isDesktop: boolean
+  onClose: () => void
 }
 
-function Sidebar({ collapsed, mobileOpen }: SidebarProps) {
+function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
   const pathname = usePathname()
   const { user } = useAuth()
 
@@ -96,46 +113,64 @@ function Sidebar({ collapsed, mobileOpen }: SidebarProps) {
     return normalizedPathname.startsWith(normalizedHref)
   }
 
+  const handleNavClick = () => {
+    // Close sidebar on mobile when navigation item is clicked
+    if (!isDesktop) {
+      onClose()
+    }
+  }
+
   return (
-    <div className={`bg-light border-end h-100 d-flex flex-column transition-all ${
-      collapsed ? 'sidebar-collapsed' : 'sidebar-expanded'
-    } d-md-flex ${mobileOpen ? 'show' : ''}`}>
-      <div className="p-3 flex-grow-1">
-        {!collapsed && <h5 className="mb-3">Menu</h5>}
-        
-        <nav className="nav flex-column">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`nav-link d-flex align-items-center py-2 ${
-                isActive(item.href, item.exact) 
-                  ? 'active bg-primary text-white rounded' 
-                  : 'text-dark'
-              }`}
-              title={collapsed ? item.label : undefined}
-            >
-              <i className={`${item.icon} ${collapsed ? '' : 'me-2'}`}></i>
-              {!collapsed && item.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
+    <>
+      {/* Mobile backdrop */}
+      {!isDesktop && isOpen && (
+        <div 
+          className="sidebar-backdrop" 
+          onClick={onClose}
+        />
+      )}
       
-      {!collapsed && (
-        <div className="p-3 border-top">
-          <div className="d-flex align-items-center mb-3">
-            <i className="bi-person-circle me-2 fs-5"></i>
-            <div>
-              <div className="fw-semibold text-truncate" style={{maxWidth: '150px'}}>
-                {user?.email}
+      <div className={`sidebar bg-light border-end h-100 d-flex flex-column ${
+        isOpen ? 'sidebar-open' : 'sidebar-closed'
+      } ${isDesktop ? 'sidebar-desktop' : 'sidebar-mobile'}`}>
+        <div className="p-3 flex-grow-1">
+          {isOpen && <h5 className="mb-3">Menu</h5>}
+          
+          <nav className="nav flex-column">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`nav-link d-flex align-items-center py-2 ${
+                  isActive(item.href, item.exact) 
+                    ? 'active bg-primary text-white rounded' 
+                    : 'text-dark'
+                }`}
+                title={!isOpen ? item.label : undefined}
+                onClick={handleNavClick}
+              >
+                <i className={`${item.icon} ${isOpen ? 'me-2' : ''}`}></i>
+                {isOpen && item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+        
+        {isOpen && (
+          <div className="p-3 border-top">
+            <div className="d-flex align-items-center mb-3">
+              <i className="bi-person-circle me-2 fs-5"></i>
+              <div>
+                <div className="fw-semibold text-truncate" style={{maxWidth: '150px'}}>
+                  {user?.email}
+                </div>
+                <small className="text-muted">Logged in</small>
               </div>
-              <small className="text-muted d-none">Logged in</small>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   )
 }
 
