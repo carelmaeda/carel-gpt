@@ -122,19 +122,12 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
 
   return (
     <>
-      {/* Mobile backdrop */}
-      {!isDesktop && isOpen && (
-        <div 
-          className="sidebar-backdrop" 
-          onClick={onClose}
-        />
-      )}
-      
-      <div className={`sidebar bg-light border-end h-100 d-flex flex-column ${
-        isOpen ? 'sidebar-open' : 'sidebar-closed'
-      } ${isDesktop ? 'sidebar-desktop' : 'sidebar-mobile'}`}>
+     
+      <div className={`sidebar bg-white h-100 d-flex flex-column ${
+        isOpen ? 'sidebar-open' : ''
+      } ${isDesktop ? 'sidebar-desktop' : ''}`}>
         <div className="p-3 flex-grow-1">
-          {isOpen && <h5 className="mb-3">Menu</h5>}
+          <h5 className="mb-3">Menu</h5>
           
           <nav className="nav flex-column">
             {navItems.map((item) => (

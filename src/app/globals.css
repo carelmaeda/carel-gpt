@@ -1,5 +1,14 @@
+html,
+body {
+  background: #faf9f5;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .preview-container {
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
@@ -105,4 +114,55 @@
 .file-upload-zone.drag-over {
   background-color: #e7f1ff;
   transform: scale(1.02);
+}
+
+.sidebar {
+  transition: all 0.3s ease-in-out;
+}
+
+.sidebar-desktop {
+  position: relative;
+}
+.sidebar-desktop.sidebar-open {
+  width: 250px;
+  min-width: 250px;
+}
+.sidebar-desktop.sidebar-closed {
+  width: auto;
+}
+
+.sidebar-mobile {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  z-index: 1050;
+  height: calc(100vh - 56px);
+}
+.sidebar-mobile.sidebar-open {
+  transform: translateX(0);
+}
+.sidebar-mobile.sidebar-closed {
+  transform: translateX(-100%);
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1040;
+}
+
+.transition-margin {
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.main-with-sidebar {
+  margin-left: 0;
+}
+
+.main-full-width {
+  margin-left: 0;
 }/*# sourceMappingURL=globals.css.map */

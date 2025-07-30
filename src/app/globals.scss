@@ -1,5 +1,14 @@
+html,
+body {
+  background: #faf9f5;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .preview-container {
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
@@ -117,15 +126,14 @@
 // Desktop sidebar styles
 .sidebar-desktop {
   position: relative;
-  
+
   &.sidebar-open {
     width: 250px;
     min-width: 250px;
   }
-  
+
   &.sidebar-closed {
-    width: 60px;
-    min-width: 60px;
+    width: auto;
   }
 }
 
@@ -135,13 +143,12 @@
   top: 56px;
   left: 0;
   z-index: 1050;
-  width: 280px;
   height: calc(100vh - 56px);
-  
+
   &.sidebar-open {
     transform: translateX(0);
   }
-  
+
   &.sidebar-closed {
     transform: translateX(-100%);
   }
@@ -154,7 +161,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 1040;
 }
 
