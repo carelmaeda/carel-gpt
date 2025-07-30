@@ -1,12 +1,14 @@
 'use client'
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
+import MagicLinkForm from './MagicLinkForm'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showMagicLink, setShowMagicLink] = useState(false)
   const { signIn } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,6 +30,22 @@ export default function LoginForm() {
     } else {
       setError('Redirecting to dashboard...')
     }
+  }
+
+  if (showMagicLink) {
+    return (
+      <div>
+        <MagicLinkForm />
+        <div className="text-center mt-3">
+          <button 
+            className="btn btn-link" 
+            onClick={() => setShowMagicLink(false)}
+          >
+            Back to password login
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -74,12 +92,25 @@ export default function LoginForm() {
           
           <button 
             type="submit" 
-            className="btn btn-primary w-100"
+            className="btn btn-primary w-100 mb-3"
             disabled={loading}
           >
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
+        
+        <div className="text-center">
+          <div className="mb-2">
+            <small className="text-muted">or</small>
+          </div>
+          <button 
+            className="btn btn-outline-primary w-100" 
+            onClick={() => setShowMagicLink(true)}
+            disabled={loading}
+          >
+            Sign In with Magic Link
+          </button>
+        </div>
       </div>
     </div>
   )

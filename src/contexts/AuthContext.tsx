@@ -10,6 +10,7 @@ interface AuthContextType {
   loading: boolean
   signIn: (email: string, password: string) => Promise<{ error?: string }>
   signUp: (email: string, password: string) => Promise<{ error?: string }>
+  signInWithMagicLink: (email: string) => Promise<{ error?: string }>
   signOut: () => Promise<void>
 }
 
@@ -23,24 +24,48 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      setSession(session)
-      setUser(session?.user ?? null)
-      setLoading(false)
+      // Check for auth tokens in URL first
+      const { data, error } = await supabase.auth.getSession()
+      if (data.session) {
+        setSession(data.session)
+        setUser(data.session.user)
+        setLoading(false)
+        return
+      }
+      
+      // If no session and we're on callback page, wait a bit for redirect processing
+      if (window.location.pathname === '/auth/callback/') {
+        setTimeout(async () => {
+          const { data: laterSession } = await supabase.auth.getSession()
+          setSession(laterSession.session)
+          setUser(laterSession.session?.user ?? null)
+          setLoading(false)
+        }, 1000)
+      } else {
+        setSession(null)
+        setUser(null)
+        setLoading(false)
+      }
     }
 
     getSession()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('Auth state change:', event, session)
         setSession(session)
         setUser(session?.user ?? null)
         setLoading(false)
+        
+        // Redirect to dashboard on successful sign in
+        if (event === 'SIGNED_IN' && session) {
+          router.push('/dashboard')
+        }
       }
     )
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [router])
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -69,6 +94,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return {}
   }
 
+  const signInWithMagicLink = async (email: string) => {
+    try {
+      const redirectUrl = `${window.location.origin}/auth/callback/`
+      console.log('Magic link redirect URL:', redirectUrl)
+      
+      const { data, error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: redirectUrl,
+          // Force PKCE flow for better compatibility with static sites
+          shouldCreateUser: true,
+          data: {}
+        }
+      })
+      
+      console.log('Magic link response:', { data, error })
+      
+      if (error) {
+        return { error: error.message }
+      }
+      
+      return {}
+    } catch (err) {
+      console.error('Magic link error:', err)
+      return { error: err instanceof Error ? err.message : 'Unknown error' }
+    }
+  }
+
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut()
@@ -90,6 +143,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loading,
     signIn,
     signUp,
+    signInWithMagicLink,
     signOut,
   }
 

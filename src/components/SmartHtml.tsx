@@ -15,6 +15,7 @@ export default function SmartHtml() {
   const [editableTexts, setEditableTexts] = useState<EditableTextNode[]>([]);
   const [modifiedHtml, setModifiedHtml] = useState<string>('');
   const [showToast, setShowToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-hide toast notifications after 5 seconds
@@ -25,9 +26,8 @@ export default function SmartHtml() {
     }
   }, [showToast]);
 
-  // Handle file upload
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  // Handle file processing (common for upload and drop)
+  const processFile = async (file: File) => {
     if (!file || file.type !== 'text/html') {
       setShowToast({ message: 'Please upload a valid HTML file', type: 'error' });
       return;
@@ -43,6 +43,38 @@ export default function SmartHtml() {
     } catch (error) {
       setShowToast({ message: 'Failed to read HTML file', type: 'error' });
       console.error('File reading error:', error);
+    }
+  };
+
+  // Handle file upload
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      await processFile(file);
+    }
+  };
+
+  // Handle drag and drop events
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDragOver(false);
+  };
+
+  const handleDrop = async (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDragOver(false);
+
+    const files = Array.from(event.dataTransfer.files);
+    if (files.length > 0) {
+      await processFile(files[0]);
     }
   };
 
@@ -130,6 +162,20 @@ export default function SmartHtml() {
     }
   };
 
+  // Reset to original values
+  const resetToOriginal = () => {
+    if (editableTexts.length === 0) return;
+    
+    const resetTexts = editableTexts.map(textNode => ({
+      ...textNode,
+      currentText: textNode.originalText
+    }));
+    
+    setEditableTexts(resetTexts);
+    setModifiedHtml(originalHtml);
+    setShowToast({ message: 'Text reset to original values!', type: 'success' });
+  };
+
   // Reset form
   const resetForm = () => {
     setUploadedFile(null);
@@ -149,23 +195,39 @@ export default function SmartHtml() {
         <div className="row">
           
           {/* LEFT COLUMN: Upload and Edit Controls */}
-          <div className="col-md-4 mb-4">
+          <div className="col-md-4">
             
             {/* File Upload Section */}
             <div className="mb-3">
               <label htmlFor="htmlFileInput" className="form-label">
                 Upload HTML File
               </label>
-              <input
-                ref={fileInputRef}
-                type="file"
-                id="htmlFileInput"
-                className="form-control"
-                accept=".html,.htm"
-                onChange={handleFileUpload}
-              />
+              <div
+                className={`file-upload-zone ${isDragOver ? 'drag-over' : ''}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  id="htmlFileInput"
+                  className="d-none"
+                  accept=".html,.htm"
+                  onChange={handleFileUpload}
+                />
+                <div className="text-center p-3">
+                  <i className="bi bi-plus fs-1 text-muted mb-2"></i>
+                  <p className="mb-1">
+                    <strong>Click to browse</strong> or drop it like it's hot.
+                  </p>
+                  <small className="text-muted">HTML files only</small>
+                </div>
+              </div>
               {uploadedFile && (
                 <small className="text-muted mt-1 d-block">
+                  <i className="bi bi-check-circle-fill text-success me-1"></i>
                   Uploaded: {uploadedFile.name}
                 </small>
               )}
@@ -173,8 +235,8 @@ export default function SmartHtml() {
 
             {/* Editable Text Fields */}
             {editableTexts.length > 0 && (
-              <div className="mb-3">
-                <h5>Editable Text Content</h5>
+              <div className="my-3">
+                <h5>Editable Text</h5>
                 <div className="editable-texts-container" style={{ maxHeight: '400px', overflowY: 'auto' }}>
                   {editableTexts.map((textNode, index) => (
                     <div key={textNode.id} className="mb-2">
@@ -222,6 +284,13 @@ export default function SmartHtml() {
             {/* ACTION BUTTONS */}
             {originalHtml && (
               <div className="btn-row">
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={resetToOriginal}
+                  disabled={editableTexts.length === 0}
+                >
+                  Reset to Original
+                </button>
                 <button
                   className="btn btn-outline-danger"
                   onClick={resetForm}
