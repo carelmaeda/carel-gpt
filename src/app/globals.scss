@@ -1,17 +1,27 @@
+// Import Nordic Cool variables first (must be before @import)
+@use "variables" as *;
+
+// Then import Bootstrap with our variable overrides
+@import "~bootstrap/scss/bootstrap";
+
 html,
 body {
-  background: #faf9f5;
+  background: $color-background;
   margin: 0;
   padding: 0;
   height: 100%;
 }
 
+// ===================
+// Layout
+// ===================
+
 .preview-container {
   display: flex;
-  flex: 1;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
+  flex: 1;
 }
 
 .preview-wrapper {
@@ -19,33 +29,34 @@ body {
   width: 100%;
   overflow-y: auto;
   white-space: normal;
-  background: #f4f4f4;
+  background: $color-gray-200;
 }
 
-.dropdown-item:hover {
-  background-color: #f8f9fa;
-}
+// ===================
+// Dropdown
+// ===================
 
 .dropdown-menu {
   max-height: 300px;
   overflow-y: auto;
-  border: 1px solid #dee2e6;
-  border-radius: 0.375rem;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: 1px solid $color-blue-200;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
 }
 
 .dropdown-item {
   padding: 0.5rem 1rem;
-  border: none;
   background: none;
-  width: 100%;
+  border: none;
   text-align: left;
+  width: 100%;
   transition: background-color 0.15s ease-in-out;
-}
 
-.dropdown-item:focus {
-  background-color: #f8f9fa;
-  outline: none;
+  &:hover,
+  &:focus {
+    background-color: $color-blue-100;
+    outline: none;
+  }
 }
 
 .dropdown-logo {
@@ -56,18 +67,22 @@ body {
   flex-shrink: 0;
 }
 
+// ===================
+// Radio Form
+// ===================
+
 .form-radio {
-  border: 1px solid #6c757d;
-  border-radius: 0.375rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
   position: relative;
-  width: max-content;
+  padding: 0.5rem 1rem;
+  border: 1px solid $color-blue-500;
+  border-radius: $radius-md;
+  cursor: pointer;
 
   label {
     padding-left: 1.5rem;
     cursor: pointer;
   }
+
   input {
     position: absolute;
     top: 0.75rem;
@@ -75,55 +90,55 @@ body {
   }
 }
 
-.btn-outline-danger {
-  background-color: #f4f4f4;
-}
+// ===================
+// Buttons
+// ===================
 
 .btn-row {
-  padding: 1rem;
-  background: white;
-  border-radius: 8px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   gap: 1rem;
-}
+  padding: 1rem;
+  border-radius: $radius-md;
 
-@media (max-width: 768px) {
-  .btn-row {
-    position: relative;
-    width: 100%;
+  @media (max-width: $breakpoint-tablet) {
     display: grid;
     padding: 0;
-    border: none !important;
     margin: 0;
+    border: none !important;
   }
 }
 
+// ===================
+// File Upload
+// ===================
+
 .file-upload-zone {
-  border: 2px dashed #dee2e6;
-  border-radius: 0.375rem;
-  background-color: #deffe2;
+  border: 2px dashed $color-blue-500;
+  border-radius: $radius-md;
+  background-color: $color-blue-200;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: dashed 2px #dee2e6;
-  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover {
-    background-color: #f2f2f2;
+    background-color: $color-gray-200;
   }
 
   &.drag-over {
-    background-color: #e7f1ff;
+    background-color: $color-blue-100;
     transform: scale(1.02);
   }
 }
 
-// Sidebar base styles
+// ===================
+// Sidebar
+// ===================
+
 .sidebar {
-  transition: all 0.3s ease-in-out;
+  transition: margin-left 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-// Desktop sidebar styles
+// Desktop
 .sidebar-desktop {
   position: relative;
 
@@ -137,43 +152,66 @@ body {
   }
 }
 
-// Mobile sidebar styles
+// Mobile
 .sidebar-mobile {
   position: fixed;
   top: 56px;
   left: 0;
-  z-index: 1050;
   height: calc(100vh - 56px);
+  transform: translateX(-100%);
 
   &.sidebar-open {
     transform: translateX(0);
   }
-
-  &.sidebar-closed {
-    transform: translateX(-100%);
-  }
 }
 
-// Mobile backdrop
+// Overlay
 .sidebar-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 1040;
+  background-color: rgba($color-gray-500, 0.3);
 }
 
-// Main content transitions
-.transition-margin {
-  transition: margin-left 0.3s ease-in-out;
-}
+// ===================
+// Main Content
+// ===================
 
-.main-with-sidebar {
-  margin-left: 0; // Let flexbox handle the spacing
-}
-
+.main-with-sidebar,
 .main-full-width {
   margin-left: 0;
+}
+
+// ===================
+// Icons
+// ===================
+
+.icon {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  object-fit: contain;
+  vertical-align: middle;
+
+  &.icon-sm {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &.icon-md {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  &.icon-lg {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &.icon-xl {
+    width: 3rem;
+    height: 3rem;
+  }
 }

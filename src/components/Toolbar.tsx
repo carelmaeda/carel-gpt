@@ -1,6 +1,7 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
+import Image from 'next/image'
 
 interface ToolbarProps {
   onMenuClick: () => void
@@ -43,11 +44,23 @@ export default function Toolbar({ onMenuClick }: ToolbarProps) {
           type="button"
           aria-label="Toggle sidebar"
         >
-          <i className="bi bi-list"></i>
+          <Image
+            src="/icons/icon-menu.png"
+            width={20}
+            height={20}
+            alt="Menu"
+            className="icon"
+          />
         </button>
         
         <div className="navbar-brand mb-0 h1 d-flex align-items-center">
-          <i className="bi bi-cpu me-2 text-primary"></i>
+          <Image
+            src="/icons/icon-logo.png"
+            width={24}
+            height={24}
+            alt="Logo"
+            className="icon me-2"
+          />
           Carel GPT
         </div>
       </div>
@@ -59,7 +72,13 @@ export default function Toolbar({ onMenuClick }: ToolbarProps) {
           onClick={toggleDropdown}
           aria-expanded={dropdownOpen}
         >
-          <i className="bi bi-person-circle me-2"></i>
+          <Image
+            src="/icons/icon-profile.png"
+            width={20}
+            height={20}
+            alt="Profile"
+            className="icon me-2"
+          />
           <span className="d-none d-sm-inline">{user?.email}</span>
         </button>
         <ul className={`dropdown-menu dropdown-menu-end ${dropdownOpen ? 'show' : ''}`}>
@@ -72,7 +91,13 @@ export default function Toolbar({ onMenuClick }: ToolbarProps) {
           <li><hr className="dropdown-divider" /></li>
           <li>
             <button className="dropdown-item" onClick={handleLogout}>
-              <i className="bi bi-box-arrow-right me-2"></i>
+              <Image
+                src="/icons/icon-door.png"
+                width={16}
+                height={16}
+                alt="Logout"
+                className="icon me-2"
+              />
               Logout
             </button>
           </li>

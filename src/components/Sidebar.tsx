@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import Toolbar from './Toolbar'
+import Image from 'next/image'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -84,19 +85,19 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
   const navItems = [
     {
       href: '/dashboard',
-      icon: 'bi-speedometer2',
+      icon: '/icons/icon-home.png',
       label: 'Dashboard',
       exact: true
     },
     {
       href: '/email-generator',
-      icon: 'bi-envelope-at',
+      icon: '/icons/icon-envelop.png',
       label: 'Email Generator',
       exact: true
     },
     {
       href: '/smart-html',
-      icon: 'bi-lightning-fill',
+      icon: '/icons/icon-magic.png',
       label: 'Smart HTML',
       exact: true
     }
@@ -142,7 +143,13 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
                 title={!isOpen ? item.label : undefined}
                 onClick={handleNavClick}
               >
-                <i className={`${item.icon} ${isOpen ? 'me-2' : ''}`}></i>
+                <Image
+                  src={item.icon}
+                  width={20}
+                  height={20}
+                  alt={item.label}
+                  className={`icon ${isOpen ? 'me-2' : ''}`}
+                />
                 {isOpen && item.label}
               </Link>
             ))}
@@ -152,7 +159,13 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
         {isOpen && (
           <div className="p-3 border-top">
             <div className="d-flex align-items-center mb-3">
-              <i className="bi-person-circle me-2 fs-5"></i>
+              <Image
+                src="/icons/icon-profile.png"
+                width={24}
+                height={24}
+                alt="Profile"
+                className="icon me-2"
+              />
               <div>
                 <div className="fw-semibold text-truncate" style={{maxWidth: '150px'}}>
                   {user?.email}

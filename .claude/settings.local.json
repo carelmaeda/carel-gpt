@@ -33,7 +33,11 @@
       "Bash(ls:*)",
       "Bash(npm cache clean:*)",
       "Bash(mv:*)",
-      "Bash(timeout 45 npm run dev)"
+      "Bash(timeout 45 npm run dev)",
+      "Bash(wmic process where:*)",
+      "Bash(cp:*)",
+      "Bash(robocopy:*)",
+      "Bash(copy \"src\\assets\\icons\\icon-check.png\" \"public\\icons\"\")"
     ],
     "deny": []
   }

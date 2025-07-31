@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 
 interface EditableTextNode {
   id: string;
@@ -267,7 +268,13 @@ export default function SmartHtml() {
                   onChange={handleFileUpload}
                 />
                 <div className="text-center p-3">
-                  <i className="bi bi-plus fs-1 text-muted mb-2"></i>
+                  <Image
+                    src="/icons/icon-plus.png"
+                    width={48}
+                    height={48}
+                    alt="Plus"
+                    className="icon icon-xl text-muted mb-2"
+                  />
                   <p className="mb-1">
                     <strong>Click to browse</strong> or drop it like it&apos;s hot.
                   </p>
@@ -276,7 +283,13 @@ export default function SmartHtml() {
               </div>
               {uploadedFile && (
                 <small className="text-muted mt-1 d-block">
-                  <i className="bi bi-check-circle-fill text-success me-1"></i>
+                  <Image
+                    src="/icons/icon-check.png"
+                    width={16}
+                    height={16}
+                    alt="Check"
+                    className="icon me-1"
+                  />
                   Uploaded: {uploadedFile.name}
                 </small>
               )}
@@ -323,7 +336,13 @@ export default function SmartHtml() {
               ) : (
                 <div className="d-flex align-items-center justify-content-center h-100 text-muted">
                   <div className="text-center">
-                    <i className="bi bi-file-earmark-code" style={{ fontSize: '3rem' }}></i>
+                    <Image
+                      src="/icons/icon-file.png"
+                      width={48}
+                      height={48}
+                      alt="File"
+                      className="icon icon-xl"
+                    />
                     <p className="mt-2">Upload an HTML file to start editing</p>
                   </div>
                 </div>
@@ -333,19 +352,21 @@ export default function SmartHtml() {
             {/* ACTION BUTTONS */}
             {originalHtml && (
               <div className="btn-row">
-                <button
-                  className="btn btn-outline-secondary"
-                  onClick={resetToOriginal}
-                  disabled={editableTexts.length === 0}
-                >
-                  Reset to Original
-                </button>
-                <button
+                                <button
                   className="btn btn-outline-danger"
                   onClick={resetForm}
                 >
                   Reset Form
                 </button>
+                
+                <button
+                  className="btn btn-secondary"
+                  onClick={resetToOriginal}
+                  disabled={editableTexts.length === 0}
+                >
+                  Reset to Original
+                </button>
+
                 <button
                   className="btn btn-primary"
                   onClick={downloadHtml}
