@@ -1,5 +1,6 @@
 import LoginForm from '@/components/LoginForm'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function LoginPage() {
   return (
@@ -7,8 +8,16 @@ export default function LoginPage() {
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="text-center mb-5">
-            <h1>Carel GPT</h1>
-            <p className="lead">Sign in to access your dashboard</p>
+          <div className="w-100 justify-content-center d-flex align-items-center">
+            <Image
+              src="/icons/icon-logo.png"
+              width={32}
+              height={32}
+              alt="Logo"
+              className="icon icon-xl"
+            />
+          <h1>Carel GPT</h1>
+          </div>
           </div>
           
           <LoginForm />

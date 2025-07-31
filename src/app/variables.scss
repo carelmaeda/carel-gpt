@@ -73,8 +73,10 @@ $color-background: $color-gray-100;
 $font-family-primary: "Inter", "Helvetica Neue", sans-serif;
 
 // ----------------------------------------
-// Border Radius & Shadows
+// Border ,  Border Radius & Shadows
 // ----------------------------------------
+
+$border-primary: solid 1px $color-blue-200;
 
 $radius-sm: 4px;
 $radius-md: 8px;

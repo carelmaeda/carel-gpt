@@ -36,10 +36,19 @@ body {
 // Dropdown
 // ===================
 
+.dropdown-toggle {
+  background: $white;
+  border: $border-primary;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .dropdown-menu {
   max-height: 300px;
   overflow-y: auto;
-  border: 1px solid $color-blue-200;
+  border: $border-primary;
   border-radius: $radius-md;
   box-shadow: $shadow-sm;
 }
@@ -73,8 +82,9 @@ body {
 
 .form-radio {
   position: relative;
+  background: $white;
   padding: 0.5rem 1rem;
-  border: 1px solid $color-blue-500;
+  border: $border-primary;
   border-radius: $radius-md;
   cursor: pointer;
 
@@ -93,6 +103,11 @@ body {
 // ===================
 // Buttons
 // ===================
+
+.btn-primary,
+.btn-secondary {
+  color: $white;
+}
 
 .btn-row {
   display: flex;
@@ -211,5 +226,32 @@ body {
   &.icon-xl {
     width: 3rem;
     height: 3rem;
+  }
+}
+
+// ===================
+// Toast Notifications
+// ===================
+
+.toast {
+  border-radius: $border-radius-sm;
+  &.bg-success {
+    background-color: $color-green-500 !important;
+    color: $white !important;
+  }
+
+  &.bg-error {
+    background-color: $color-red-500 !important;
+    color: $white !important;
+  }
+
+  &.bg-info {
+    background-color: $color-blue-500 !important;
+    color: $white !important;
+  }
+
+  &.bg-warning {
+    background-color: $color-yellow-500 !important;
+    color: $color-gray-900 !important; // Dark text for better contrast on yellow
   }
 }

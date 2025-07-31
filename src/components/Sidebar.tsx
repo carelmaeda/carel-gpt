@@ -86,7 +86,7 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
     {
       href: '/dashboard',
       icon: '/icons/icon-home.png',
-      label: 'Dashboard',
+      label: 'Home',
       exact: true
     },
     {
@@ -123,13 +123,11 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
 
   return (
     <>
-     
       <div className={`sidebar bg-white h-100 d-flex flex-column ${
-        isOpen ? 'sidebar-open' : ''
+        isOpen ? '' : ''
       } ${isDesktop ? 'sidebar-desktop' : ''}`}>
         <div className="p-3 flex-grow-1">
-          <h5 className="mb-3">Menu</h5>
-          
+          <div className="mb-2">Menu</div>
           <nav className="nav flex-column">
             {navItems.map((item) => (
               <Link
@@ -164,13 +162,13 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
                 width={24}
                 height={24}
                 alt="Profile"
-                className="icon me-2"
+                className="icon icon-lg me-2"
               />
               <div>
                 <div className="fw-semibold text-truncate" style={{maxWidth: '150px'}}>
                   {user?.email}
                 </div>
-                <small className="text-muted">Logged in</small>
+                <small className="text-muted d-none">Logged in</small>
               </div>
             </div>
           </div>

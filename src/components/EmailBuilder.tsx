@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import Image from 'next/image';
 import { templates, Templates } from '@/data/templates';
 import { renderTemplate } from '@/lib/renderTemplate';
 
@@ -35,7 +36,7 @@ export default function EmailBuilder() {
   
   // UI & Output States
   const [finalHtml, setFinalHtml] = useState('');
-  const [showToast, setShowToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [showToast, setShowToast] = useState<{ message: string; type: 'success' | 'error' | 'info' | 'warning' } | null>(null);
   const [showClientDropdown, setShowClientDropdown] = useState(false);
   
   // Refs
@@ -88,7 +89,8 @@ export default function EmailBuilder() {
     // Include footer if enabled
     const footer = includeFooter ? footerTemplate : '';
 
-    // Generate client logo HTML
+    // Generate client logo HTML - Note: This creates HTML string for email template
+    // For email templates, we still need to use img tags as Next.js Image components don't work in email HTML
     const logoHtml = `<img src="${selectedClientData.logo}" alt="${client} Logo" width="120" height="120" style="display:block; border:0;">`;
 
     // Render final email HTML
@@ -242,19 +244,20 @@ export default function EmailBuilder() {
                 <label className="form-label">
                   Select Client
                 </label>
-            <div className="dropdown" ref={dropdownRef}>
+            <div className="dropdown active" ref={dropdownRef}>
               <button
-                className="btn border dropdown-toggle w-100 d-flex align-items-center justify-content-between"
+                className="btn dropdown-toggle"
                 type="button"
                 onClick={() => setShowClientDropdown(!showClientDropdown)}
                 style={{ textAlign: 'left' }}
               >
                 {client ? (
                   <div className="d-flex align-items-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img 
+                    <Image 
                       src={templatesData.clients[client]?.logo} 
                       alt={client}
+                      width={24}
+                      height={24}
                       className="dropdown-logo"
                     />
                     {client}
@@ -275,10 +278,11 @@ export default function EmailBuilder() {
                           setShowClientDropdown(false);
                         }}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img 
+                        <Image 
                           src={templatesData.clients[c]?.logo} 
                           alt={c}
+                          width={24}
+                          height={24}
                           className="dropdown-logo"
                         />
                         {c}

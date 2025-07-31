@@ -49,7 +49,7 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="card">
+    <div className="card bg-white border">
       <div className="card-body">
         <h2 className="card-title">Login</h2>
         
@@ -60,7 +60,7 @@ export default function LoginForm() {
         )}
         
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
+          <div className="form-group mb-3">
             <label htmlFor="email" className="form-label">
               Email
             </label>
@@ -75,7 +75,7 @@ export default function LoginForm() {
             />
           </div>
           
-          <div className="mb-3">
+          <div className="form-group mb-3">
             <label htmlFor="password" className="form-label">
               Password
             </label>
@@ -90,27 +90,27 @@ export default function LoginForm() {
             />
           </div>
           
-          <button 
-            type="submit" 
-            className="btn btn-primary w-100 mb-3"
-            disabled={loading}
-          >
-            {loading ? 'Signing in...' : 'Sign In'}
-          </button>
+          <div className="d-grid gap-2 text-center py-3">
+              <button 
+                type="submit" 
+                className="btn btn-lg btn-primary w-100"
+                disabled={loading}
+              >
+                {loading ? 'Signing in...' : 'Sign In'}
+              </button>
+              <small className="text-muted">or</small>
+              <button 
+                className="btn btn-lg btn-outline-secondary w-100" 
+                onClick={() => setShowMagicLink(true)}
+                disabled={loading}
+              >
+                Use Magic Link
+              </button>
+          </div>
+
         </form>
         
-        <div className="text-center">
-          <div className="mb-2">
-            <small className="text-muted">or</small>
-          </div>
-          <button 
-            className="btn btn-outline-primary w-100" 
-            onClick={() => setShowMagicLink(true)}
-            disabled={loading}
-          >
-            Sign In with Magic Link
-          </button>
-        </div>
+
       </div>
     </div>
   )
