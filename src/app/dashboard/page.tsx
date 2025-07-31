@@ -19,7 +19,7 @@ export default function DashboardPage() {
                     width={32}
                     height={32}
                     alt="Email"
-                    className="icon icon-lg mb-3"
+                    className="icon icon-xl"
                   />
                   <h5 className="card-title">Email Generator</h5>
                   <p className="card-text">Create branded HTML emails with customizable templates</p>
@@ -38,7 +38,7 @@ export default function DashboardPage() {
                     width={32}
                     height={32}
                     alt="Magic"
-                    className="icon icon-lg mb-3"
+                    className="icon icon-xl"
                   />
                   <h5 className="card-title">Smart HTML</h5>
                   <p className="card-text">Upload HTML files and edit text content with live preview</p>

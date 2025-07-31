@@ -148,7 +148,7 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
                   width={20}
                   height={20}
                   alt={item.label}
-                  className={`icon ${isOpen ? 'me-2' : ''}`}
+                  className={`icon icon-lg ${isOpen ? 'me-2' : ''}`}
                 />
                 {isOpen && item.label}
               </Link>

@@ -39,7 +39,7 @@ export default function Toolbar({ onMenuClick }: ToolbarProps) {
     <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom px-3 py-2">
       <div className="d-flex align-items-center flex-grow-1">
         <button
-          className="btn btn-outline-secondary me-3"
+          className="btn btn-outline-primary me-3"
           onClick={onMenuClick}
           type="button"
           aria-label="Toggle sidebar"
@@ -49,17 +49,17 @@ export default function Toolbar({ onMenuClick }: ToolbarProps) {
             width={20}
             height={20}
             alt="Menu"
-            className="icon"
+            className="icon icon-lg"
           />
         </button>
         
-        <div className="navbar-brand mb-0 h1 d-flex align-items-center">
+        <div className="fw-bold d-flex align-items-center">
           <Image
             src="/icons/icon-logo.png"
             width={24}
             height={24}
             alt="Logo"
-            className="icon me-2"
+            className="icon icon-lg"
           />
           Carel GPT
         </div>
@@ -67,7 +67,7 @@ export default function Toolbar({ onMenuClick }: ToolbarProps) {
 
       <div className="dropdown" ref={dropdownRef}>
         <button
-          className="btn btn-outline-secondary dropdown-toggle d-flex align-items-center"
+          className="btn btn-outline-primary dropdown-toggle d-flex align-items-center"
           type="button"
           onClick={toggleDropdown}
           aria-expanded={dropdownOpen}
@@ -77,7 +77,7 @@ export default function Toolbar({ onMenuClick }: ToolbarProps) {
             width={20}
             height={20}
             alt="Profile"
-            className="icon me-2"
+            className="icon icon-lg"
           />
           <span className="d-none d-sm-inline">{user?.email}</span>
         </button>
@@ -96,7 +96,7 @@ export default function Toolbar({ onMenuClick }: ToolbarProps) {
                 width={16}
                 height={16}
                 alt="Logout"
-                className="icon me-2"
+                className="icon icon-lg"
               />
               Logout
             </button>
