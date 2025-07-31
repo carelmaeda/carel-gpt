@@ -239,12 +239,12 @@ export default function SmartHtml() {
 
   return (
     <>
-      <div className="container-fluid" data-component="smart-html">
-        <h2 className="mb-3">Smart HTML Editor</h2>
-        <div className="row">
-          
+      <div className="app-container" data-component="smart-html">
+        <h2 className="app-title">Smart HTML Editor</h2>
+        
+        <div className="two-column-layout">
           {/* LEFT COLUMN: Upload and Edit Controls */}
-          <div className="col-md-4">
+          <div className="form-column">
             
             {/* File Upload Section */}
             <div className="mb-3">
@@ -321,11 +321,10 @@ export default function SmartHtml() {
           </div>
 
           {/* RIGHT COLUMN: HTML Preview */}
-          <div className="col-md-8 preview-container">
-            <h5>Live Preview</h5>
-            <div
-              className="border mb-3 rounded preview-wrapper"
-            >
+          <div className="preview-column">
+            <div className="preview-content">
+              <h5 className="preview-title">Live Preview</h5>
+              <div className="preview-wrapper">
               {modifiedHtml ? (
                 <iframe
                   srcDoc={modifiedHtml}
@@ -347,35 +346,35 @@ export default function SmartHtml() {
                   </div>
                 </div>
               )}
+              </div>
             </div>
 
-            {/* ACTION BUTTONS */}
-            {originalHtml && (
-              <div className="btn-row">
-                                <button
-                  className="btn btn-outline-danger"
-                  onClick={resetForm}
-                >
-                  Reset Form
-                </button>
-                
-                <button
-                  className="btn btn-secondary"
-                  onClick={resetToOriginal}
-                  disabled={editableTexts.length === 0}
-                >
-                  Reset to Original
-                </button>
+            {/* ACTION BUTTONS - Fixed at bottom */}
+            <div className="btn-row-fixed">
+              <button
+                className="btn btn-outline-danger"
+                onClick={resetForm}
+                disabled={!originalHtml}
+              >
+                Reset Form
+              </button>
+              
+              <button
+                className="btn btn-secondary"
+                onClick={resetToOriginal}
+                disabled={editableTexts.length === 0}
+              >
+                Reset to Original
+              </button>
 
-                <button
-                  className="btn btn-primary"
-                  onClick={downloadHtml}
-                  disabled={!modifiedHtml}
-                >
-                  Download HTML
-                </button>
-              </div>
-            )}
+              <button
+                className="btn btn-primary"
+                onClick={downloadHtml}
+                disabled={!modifiedHtml}
+              >
+                Download HTML
+              </button>
+            </div>
           </div>
         </div>
       </div>

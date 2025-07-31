@@ -13,23 +13,106 @@ body {
 }
 
 // ===================
-// Layout
+// Two-Column App Layout
 // ===================
 
-.preview-container {
+.app-container {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
+  overflow: hidden;
+  min-height: 600px; // Minimum height for usability
+}
+
+.app-title {
+  flex-shrink: 0;
+  padding: 1rem;
+  margin: 0;
+  background: $white;
+  border-bottom: $border-primary;
+}
+
+.two-column-layout {
   flex: 1;
+  display: flex;
+  overflow: hidden;
+  
+  // Mobile: Stack vertically
+  @media (max-width: $breakpoint-tablet - 1px) {
+    flex-direction: column;
+  }
+  
+  // Tablet and Desktop: Side by side
+  @media (min-width: $breakpoint-tablet) {
+    flex-direction: row;
+  }
+}
+
+.form-column {
+  flex: 0 0 40%;
+  padding: 1.5rem;
+  overflow-y: auto;
+  background: $white;
+  border-right: $border-primary;
+  
+  // Mobile: Full width
+  @media (max-width: $breakpoint-tablet - 1px) {
+    flex: 1;
+    border-right: none;
+    border-bottom: $border-primary;
+  }
+}
+
+.preview-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: $color-gray-100;
+  overflow: hidden;
+}
+
+.preview-content {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-title {
+  flex-shrink: 0;
+  margin: 0 0 1rem 0;
+  color: $color-gray-800;
 }
 
 .preview-wrapper {
   flex: 1;
-  width: 100%;
-  overflow-y: auto;
-  white-space: normal;
   background: $color-gray-200;
+  border-radius: $radius-md;
+  border: $border-primary;
+  padding: 1rem;
+  overflow-y: auto;
+  min-height: 400px;
+}
+
+.btn-row-fixed {
+  flex-shrink: 0;
+  background: $white;
+  border-top: $border-primary;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  
+  @media (max-width: $breakpoint-tablet) {
+    flex-wrap: wrap;
+    justify-content: center;
+    
+    .btn {
+      flex: 1;
+      min-width: 120px;
+    }
+  }
 }
 
 // ===================

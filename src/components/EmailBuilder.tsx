@@ -203,11 +203,12 @@ export default function EmailBuilder() {
 
   return (
     <>
-      <div className="container-fluid">
-        <h2 className="mb-3">Email Generator</h2>
-        <div className="row">
+      <div className="app-container">
+        <h2 className="app-title">Email Generator</h2>
+        
+        <div className="two-column-layout">
           {/* ===== LEFT COLUMN: FORM CONTROLS ===== */}
-          <div className="col-md-4 mb-4">
+          <div className="form-column">
 
             {/* TEMPLATE SELECTION */}
             <div className="mb-3">
@@ -409,23 +410,24 @@ export default function EmailBuilder() {
               </div>
             </>
           )}
-        </div>
+          </div>
 
-        {/* ===== RIGHT COLUMN: PREVIEW & ACTIONS ===== */}
-        <div className="col-md-8 preview-container">
-          {/* LIVE EMAIL PREVIEW */}
-          <h5>Live Preview</h5>
-          <div
-            className="border mb-3 rounded preview-wrapper"
-            dangerouslySetInnerHTML={{ __html: finalHtml }}
-          />
+          {/* ===== RIGHT COLUMN: PREVIEW & ACTIONS ===== */}
+          <div className="preview-column">
+            <div className="preview-content">
+              <h5 className="preview-title">Live Preview</h5>
+              <div
+                className="preview-wrapper"
+                dangerouslySetInnerHTML={{ __html: finalHtml }}
+              />
+            </div>
 
-          {/* ACTION BUTTONS */}
-          {templateName && client && (
-            <div className="btn-row">
+            {/* ACTION BUTTONS - Fixed at bottom */}
+            <div className="btn-row-fixed">
               <button
                 className="btn btn-outline-danger"
                 onClick={resetForm}
+                disabled={!templateName && !client}
               >
                 Reset Form
               </button>
@@ -444,7 +446,7 @@ export default function EmailBuilder() {
                 Copy HTML
               </button>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
@@ -470,7 +472,6 @@ export default function EmailBuilder() {
           </div>
         </div>
       )}
-      </div>
     </>
   );
 }
