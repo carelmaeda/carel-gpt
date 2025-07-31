@@ -1,7 +1,6 @@
 'use client';
 
-import SmartHtml from '@/components/SmartHtml';
-import { Layout } from '@/components/Sidebar';
+import { SmartHtml, Layout } from '@/components';
 
 export default function SmartHtmlPage() {
   return (

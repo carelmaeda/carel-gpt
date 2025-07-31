@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import MagicLinkForm from './MagicLinkForm'
+import { ButtonLoading } from '@/components'
 
 export default function LoginForm() {
   const [email, setEmail] = useState('')
@@ -93,9 +94,10 @@ export default function LoginForm() {
           <div className="d-grid gap-2 text-center py-3">
               <button 
                 type="submit" 
-                className="btn btn-lg btn-primary w-100"
+                className="btn btn-lg btn-primary w-100 d-flex align-items-center justify-content-center"
                 disabled={loading}
               >
+                {loading && <ButtonLoading />}
                 {loading ? 'Signing in...' : 'Sign In'}
               </button>
               <small className="text-muted">or</small>

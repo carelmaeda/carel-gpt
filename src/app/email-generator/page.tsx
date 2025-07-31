@@ -1,5 +1,4 @@
-import EmailBuilder from '@/components/EmailBuilder'
-import { Layout } from '@/components/Sidebar'
+import { EmailBuilder, Layout } from '@/components'
 
 export default function EmailGeneratorPage() {
   return (

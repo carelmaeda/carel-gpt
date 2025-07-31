@@ -37,7 +37,8 @@
       "Bash(wmic process where:*)",
       "Bash(cp:*)",
       "Bash(robocopy:*)",
-      "Bash(copy \"src\\assets\\icons\\icon-check.png\" \"public\\icons\"\")"
+      "Bash(copy \"src\\assets\\icons\\icon-check.png\" \"public\\icons\"\")",
+      "Bash(if exist .next rmdir /s /q .next)"
     ],
     "deny": []
   }

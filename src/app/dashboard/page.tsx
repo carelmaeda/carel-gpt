@@ -1,4 +1,4 @@
-import { Layout } from '@/components/Sidebar'
+import { Layout } from '@/components'
 import Image from 'next/image'
 
 export default function DashboardPage() {

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
+import { PageLoading } from '@/components'
 
 export default function AuthCallback() {
   const router = useRouter()
@@ -62,23 +63,7 @@ export default function AuthCallback() {
   }, [searchParams, router])
 
   if (loading) {
-    return (
-      <div className="container mt-5">
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <div className="card">
-              <div className="card-body text-center">
-                <h2 className="card-title">Authenticating...</h2>
-                <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-                <p className="mt-3">Please wait while we sign you in.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+    return <PageLoading message="Authenticating... Please wait while we sign you in." />
   }
 
   if (error) {

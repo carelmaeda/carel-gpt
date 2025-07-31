@@ -2,6 +2,7 @@
 import { useAuth } from '@/contexts/AuthContext'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { PageLoading } from '@/components'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -16,6 +17,10 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
       router.push('/login')
     }
   }, [user, loading, router])
+
+  if (loading) {
+    return <PageLoading message="Loading..." />
+  }
 
   return <>{children}</>
 }
