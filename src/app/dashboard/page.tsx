@@ -6,7 +6,7 @@ export default function DashboardPage() {
     <Layout>
       <div className="container-fluid">
           <h2 className="card-title">Welcome</h2>
-          <p className="card-text">
+          <p className="card-text text-muted">
             How can I help you today?
           </p>
           
@@ -31,7 +31,7 @@ export default function DashboardPage() {
             </div>
             
             <div className="col-md-6">
-              <div className="card border-primary">
+              <div className="card border-secondary">
                 <div className="card-body text-center">
                   <Image
                     src="/icons/icon-magic.png"
@@ -42,7 +42,7 @@ export default function DashboardPage() {
                   />
                   <h5 className="card-title">Smart HTML</h5>
                   <p className="card-text">Upload HTML files and edit text content with live preview</p>
-                  <a href="/smart-html" className="btn btn-primary">
+                  <a href="/smart-html" className="btn btn-secondary">
                     Open Smart HTML
                   </a>
                 </div>

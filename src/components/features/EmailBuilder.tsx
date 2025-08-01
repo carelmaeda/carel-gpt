@@ -215,7 +215,7 @@ export default function EmailBuilder() {
               <label className="form-label">
                 Select Template
               </label>
-              <div className="form-radio border">
+              <div className="form-radio">
                 <input
                   type="radio"
                   id="template1"

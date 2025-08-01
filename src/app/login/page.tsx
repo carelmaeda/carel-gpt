@@ -19,9 +19,7 @@ export default function LoginPage() {
           <h1>Carel GPT</h1>
           </div>
           </div>
-          
           <LoginForm />
-          
           <div className="text-center mt-4">
             <p>Don&apos;t have an account?</p>
             <Link href="/signup" className="btn btn-link">
