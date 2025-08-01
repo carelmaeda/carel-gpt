@@ -83,7 +83,7 @@ export const templates: Templates = {
   ],
   clients: {
     "Royal Canin": {
-      logo: "https://cdn.brandfetch.io/ide1aIn1hE/theme/dark/logo.svg",
+      logo: "https://cdn.brandfetch.io/ide1aIn1hE/theme/dark/logo.svg?c=1dxbfHSJFAPEGdCLU4o5B",
       ctaColor: "#E2001A",
       ctaTemplate: `<a target="_blank" href="{{cta_link}}" style="display:inline-block; background-color:#E2001A; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:5px; font-size:14px;">{{cta_text}}</a>`,
       footerTemplate: `
@@ -102,7 +102,7 @@ export const templates: Templates = {
   </table>`
     },
     "Hills Canada": {
-      logo: "https://cdn.brandfetch.io/idVKGfG_3n/w/200/h/200/theme/dark/logo.png",
+      logo: "https://cdn.brandfetch.io/idVKGfG_3n/w/200/h/200/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B",
       ctaColor: "#0054A4",
       ctaTemplate: `<a target="_blank" href="{{cta_link}}" style="display:inline-block; background-color:#0054A4; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:5px; font-size:14px;">{{cta_text}}</a>`,
       footerTemplate: `
@@ -125,7 +125,7 @@ export const templates: Templates = {
   </table>`
     },
     "MARS": {
-      logo: "https://cdn.brandfetch.io/idFvQZLcOg/theme/dark/logo.svg",
+      logo: "https://cdn.brandfetch.io/idFvQZLcOg/theme/dark/logo.svg?c=1dxbfHSJFAPEGdCLU4o5B",
       ctaColor: "#0000A0",
       ctaTemplate: `<a target="_blank" href="{{cta_link}}" style="display:inline-block; background-color:#0000A0; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:5px; font-size:14px;">{{cta_text}}</a>`,
       footerTemplate: `
@@ -144,7 +144,7 @@ export const templates: Templates = {
   </table>`
     },
     "Nestle": {
-      logo: "https://cdn.brandfetch.io/id1xOwiSj_/theme/dark/logo.svg",
+      logo: "https://cdn.brandfetch.io/id1xOwiSj_/theme/dark/logo.svg?c=1dxbfHSJFAPEGdCLU4o5B",
       ctaColor: "#007CBA",
       ctaTemplate: `<a target="_blank" href="{{cta_link}}" style="display:inline-block; background-color:#007CBA; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:5px; font-size:14px;">{{cta_text}}</a>`,
       footerTemplate: `
