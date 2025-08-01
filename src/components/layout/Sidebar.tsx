@@ -91,7 +91,7 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
     },
     {
       href: '/email-generator',
-      icon: '/icons/icon-envelop.png',
+      icon: '/icons/icon-envelope.png',
       label: 'Email Generator',
       exact: true
     },
@@ -99,6 +99,12 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
       href: '/smart-html',
       icon: '/icons/icon-magic.png',
       label: 'Smart HTML',
+      exact: true
+    },
+    {
+      href: '/html-translator',
+      icon: '/icons/icon-translate.png',
+      label: 'HTML Translator',
       exact: true
     }
   ]

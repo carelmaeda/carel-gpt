@@ -15,7 +15,7 @@ export default function DashboardPage() {
               <div className="card border-primary">
                 <div className="card-body text-center">
                   <Image
-                    src="/icons/icon-envelop.png"
+                    src="/icons/icon-envelope.png"
                     width={32}
                     height={32}
                     alt="Email"
@@ -44,6 +44,25 @@ export default function DashboardPage() {
                   <p className="card-text">Upload HTML files and edit text content with live preview</p>
                   <a href="/smart-html" className="btn btn-secondary">
                     Open Smart HTML
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="card border-danger">
+                <div className="card-body text-center">
+                  <Image
+                    src="/icons/icon-translate.png"
+                    width={32}
+                    height={32}
+                    alt="Translate"
+                    className="icon icon-xl"
+                  />
+                  <h5 className="card-title">HTML Translator</h5>
+                  <p className="card-text">Translate HTML files to English, Spanish, or French with live preview</p>
+                  <a href="/html-translator" className="btn btn-danger">
+                    Open HTML Translator
                   </a>
                 </div>
               </div>

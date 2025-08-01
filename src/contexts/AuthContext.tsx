@@ -62,7 +62,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const currentPath = window.location.pathname
         const isOnProtectedPage = currentPath.startsWith('/dashboard') || 
                                 currentPath.startsWith('/email-generator') || 
-                                currentPath.startsWith('/smart-html')
+                                currentPath.startsWith('/smart-html') ||
+                                currentPath.startsWith('/html-translator')
         
         if (event === 'SIGNED_IN' && session && !isOnProtectedPage) {
           console.log('Redirecting to dashboard from:', currentPath)
