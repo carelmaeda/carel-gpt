@@ -67,6 +67,7 @@ export default function HtmlTranslator() {
     const textNodes: TextNode[] = [];
     let nodeId = 0;
     let currentTag = '';
+    // eslint-disable-next-line prefer-const
     let tagStack: string[] = [];
 
     // Tags that should be ignored (scripts, styles, etc.)

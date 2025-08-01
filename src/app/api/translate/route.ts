@@ -221,12 +221,12 @@ export async function POST(request: NextRequest) {
     try {
       translatedText = await tryLibreTranslate(trimmedText, targetLanguage);
       method = 'LibreTranslate';
-    } catch (error) {
+    } catch {
       console.log('LibreTranslate failed, trying MyMemory...');
       try {
         translatedText = await tryMyMemoryTranslate(trimmedText, targetLanguage);
         method = 'MyMemory';
-      } catch (error) {
+      } catch {
         console.log('MyMemory failed, using mock translation...');
         translatedText = mockTranslate(trimmedText, targetLanguage);
         method = 'Mock (Demo)';
