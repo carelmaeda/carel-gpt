@@ -33,6 +33,9 @@ export default function EmailBuilder() {
   const [ctaText, setCtaText] = useState('');
   const [ctaLink, setCtaLink] = useState('');
   const [includeFooter, setIncludeFooter] = useState(false);
+  const [includeImage, setIncludeImage] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [imageWidth, setImageWidth] = useState(400); // Default 400px width
   
   // UI & Output States
   const [finalHtml, setFinalHtml] = useState('');
@@ -89,6 +92,13 @@ export default function EmailBuilder() {
     // Include footer if enabled
     const footer = includeFooter ? footerTemplate : '';
 
+    // Generate optional image HTML (appears between body and CTA)
+    // Ensure image width doesn't exceed 600px container and respects user selection
+    const effectiveImageWidth = Math.min(imageWidth, 600);
+    const imageHtml = includeImage && uploadedImage 
+      ? `<div style="text-align: center; margin: 20px 0;"><img src="${uploadedImage}" alt="Email Image" style="width: ${effectiveImageWidth}px; max-width: 100%; height: auto; border-radius: 8px;" /></div>`
+      : '';
+
     // Generate client logo HTML - Note: This creates HTML string for email template
     // For email templates, we still need to use img tags as Next.js Image components don't work in email HTML
     const logoHtml = `<img src="${selectedClientData.logo}" alt="${client} Logo" width="120" height="120" style="display:block; border:0;">`;
@@ -96,7 +106,7 @@ export default function EmailBuilder() {
     // Render final email HTML
     const html = renderTemplate(baseTemplate, {
       title: emailTitle,
-      body: emailBody,
+      body: emailBody + imageHtml,
       cta_button: ctaButton,
       footer,
       logo: logoHtml,
@@ -113,6 +123,9 @@ export default function EmailBuilder() {
     ctaText,
     ctaLink,
     includeFooter,
+    includeImage,
+    uploadedImage,
+    imageWidth,
   ]); // Dependencies: re-render when any form field changes
 
   /** Auto-hide toast notifications after 5 seconds */
@@ -159,7 +172,42 @@ export default function EmailBuilder() {
     setCtaText('');
     setCtaLink('');
     setIncludeFooter(false);
+    setIncludeImage(false);
+    setUploadedImage(null);
+    setImageWidth(400);
     setFinalHtml('');
+  };
+
+  /** Handle image upload */
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Check file size (limit to 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setShowToast({ message: 'Image size must be less than 5MB', type: 'error' });
+        return;
+      }
+      
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        setShowToast({ message: 'Please select a valid image file', type: 'error' });
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setUploadedImage(e.target?.result as string);
+        setShowToast({ message: 'Image uploaded successfully!', type: 'success' });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  /** Remove uploaded image */
+  const removeImage = () => {
+    setUploadedImage(null);
+    setIncludeImage(false);
+    setImageWidth(400); // Reset to default
   };
 
   /** Reset entire form to initial state */
@@ -330,7 +378,7 @@ export default function EmailBuilder() {
                     statusbar: true,
                     placeholder: 'Enter your email content here. You can add text, links, images, and format your message...',
                     plugins: [
-                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
+                      'advlist', 'autolink', 'lists', 'link', 'charmap',
                       'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
                       'insertdatetime', 'table', 'help', 'wordcount'
                     ],
@@ -408,6 +456,85 @@ export default function EmailBuilder() {
                   Include Footer?
                 </label>
               </div>
+
+              {/* IMAGE UPLOAD CONFIGURATION */}
+              <div className="form-check mb-2">
+                <input
+                  type="checkbox"
+                  id="includeImage"
+                  className="form-check-input"
+                  checked={includeImage}
+                  onChange={(e) => setIncludeImage(e.target.checked)}
+                />
+                <label htmlFor="includeImage" className="form-check-label">
+                  Include Image?
+                </label>
+              </div>
+
+              {/* IMAGE UPLOAD FIELD - only shown when enabled */}
+              {includeImage && (
+                <div className="mb-3">
+                  {!uploadedImage ? (
+                    <>
+                      <label htmlFor="imageUpload" className="form-label">
+                        Upload Image
+                      </label>
+                      <input
+                        type="file"
+                        id="imageUpload"
+                        className="form-control"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                      />
+                      <small className="form-text text-muted">
+                        Maximum file size: 5MB. Supported formats: JPG, PNG, GIF, WebP
+                      </small>
+                    </>
+                  ) : (
+                    <div className="uploaded-image-preview">
+                      <label className="form-label">Uploaded Image</label>
+                      <div className="image-preview-container mb-2">
+                        <Image
+                          src={uploadedImage}
+                          alt="Uploaded preview"
+                          width={200}
+                          height={100}
+                          style={{ objectFit: 'contain', border: '1px solid #ddd', borderRadius: '4px' }}
+                        />
+                      </div>
+                      
+                      {/* Image Size Controls */}
+                      <div className="mb-3">
+                        <label htmlFor="imageWidth" className="form-label">
+                          Image Width: {Math.min(imageWidth, 600)}px
+                        </label>
+                        <input
+                          type="range"
+                          id="imageWidth"
+                          className="form-range"
+                          min="100"
+                          max="600"
+                          step="10"
+                          value={imageWidth}
+                          onChange={(e) => setImageWidth(parseInt(e.target.value))}
+                        />
+                        <div className="d-flex justify-content-between">
+                          <small className="text-muted">100px</small>
+                          <small className="text-muted">600px (max)</small>
+                        </div>
+                      </div>
+                      
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={removeImage}
+                      >
+                        Remove Image
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </>
           )}
           </div>
