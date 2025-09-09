@@ -1,8 +1,8 @@
 // Import Nordic Cool variables first (must be before @import)
+@use '~bootstrap/scss/bootstrap';
+
 @use "variables" as *;
 
-// Then import Bootstrap with our variable overrides
-@import "~bootstrap/scss/bootstrap";
 
 html,
 body {

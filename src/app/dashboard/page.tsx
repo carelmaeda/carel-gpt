@@ -4,13 +4,19 @@ import Image from 'next/image'
 export default function DashboardPage() {
   return (
     <Layout>
-      <div className="container-fluid">
-          <h2 className="card-title">Welcome</h2>
+      <div className="container-fluid d-grid gap-5">
+
+        <div>
+       <h2 className="card-title">Welcome</h2>
           <p className="card-text text-muted">
             How can I help you today?
           </p>
+        </div>
+   
           
-          <div className="row g-3 mt-3">
+          <div>
+          <h3>Email Tools</h3>
+          <div className="row g-3">
             <div className="col-md-6">
               <div className="card border-primary">
                 <div className="card-body text-center">
@@ -63,6 +69,29 @@ export default function DashboardPage() {
                   <p className="card-text">Translate HTML files to English, Spanish, or French with live preview</p>
                   <a href="/html-translator" className="btn btn-danger">
                     Open HTML Translator
+                  </a>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <div>
+            <h3>Photo Tools</h3>
+              <div className="col-md-6">
+              <div className="card border-info">
+                <div className="card-body text-center">
+                  <Image
+                    src="/icons/icon-photos.png"
+                    width={32}
+                    height={32}
+                    alt="Email"
+                    className="icon icon-xl"
+                  />
+                  <h5 className="card-title">Image Resizing</h5>
+                  <p className="card-text">Resize images according to our Paygos guidelines</p>
+                  <a href="/image-resize" className="btn btn-info">
+                    Open Image Resizing
                   </a>
                 </div>
               </div>

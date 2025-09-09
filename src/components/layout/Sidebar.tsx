@@ -107,7 +107,15 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
       label: 'HTML Translator',
       exact: true
     }
+    ,
+    {
+      href: '/image-resize',
+      icon: '/icons/icon-photos.png',
+      label: 'Image Resize',
+      exact: true
+    }
   ]
+
 
   const isActive = (href: string, exact: boolean) => {
     const normalizedPathname = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname

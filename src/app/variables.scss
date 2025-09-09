@@ -1,3 +1,4 @@
+
 // ========================================
 // Nordic Cool SCSS Variables Library
 // ========================================
@@ -169,3 +170,16 @@ $alert-border-radius: $radius-md;
 $navbar-light-color: $color-gray-400;
 $navbar-light-hover-color: $color-gray-500;
 $navbar-light-active-color: $primary;
+
+
+/*TYPOGRAPHY*/
+
+h1 { font-size: 4.236rem; line-height: 1.2; }
+h2 { font-size: 2.618rem; line-height: 1.2; }
+h3 { font-size: 1.618rem; line-height: 1.2; }
+h4 { font-size: 1.272rem; line-height: 1.2; }
+h5 { font-size: 1.127rem; line-height: 1.2; }
+h6 { font-size: 1.067rem; line-height: 1.2; }
+
+p { font-size: 1rem; line-height: 1.5; }
+small { font-size: 0.786rem; line-height: 1.4; }

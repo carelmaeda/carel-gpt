@@ -293,7 +293,7 @@ export default function HtmlTranslator() {
         const translated = await tryMyMemoryTranslate(text, targetLang);
         console.log(`MyMemory translation: "${text}" -> "${translated}"`);
         return translated;
-      } catch (error) {
+      } catch {
         console.log('MyMemory failed, using mock translation...');
         const mockResult = mockTranslate(text, targetLang);
         console.log(`Mock translation: "${text}" -> "${mockResult}"`);
