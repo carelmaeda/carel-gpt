@@ -1,6 +1,5 @@
 // Import Nordic Cool variables first (must be before @import)
 @use '~bootstrap/scss/bootstrap';
-
 @use "variables" as *;
 
 
@@ -107,6 +106,7 @@ body {
     .btn {
       flex: 1;
       min-width: 120px;
+      
     }
   }
 }
