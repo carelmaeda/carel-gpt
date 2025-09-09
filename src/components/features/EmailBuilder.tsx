@@ -197,6 +197,7 @@ export default function EmailBuilder() {
       const reader = new FileReader();
       reader.onload = (e) => {
         setUploadedImage(e.target?.result as string);
+        setIncludeImage(true); // Automatically enable image inclusion
         setShowToast({ message: 'Image uploaded successfully!', type: 'success' });
       };
       reader.readAsDataURL(file);
@@ -259,7 +260,7 @@ export default function EmailBuilder() {
           <div className="form-column">
 
             {/* TEMPLATE SELECTION */}
-            <div className="mb-3">
+            <div>
               <label className="form-label">
                 Select Template
               </label>
@@ -289,7 +290,7 @@ export default function EmailBuilder() {
 
             {/* CLIENT SELECTION DROPDOWN - Only show if template is selected */}
             {templateName && (
-              <div className="mb-3">
+              <div>
                 <label className="form-label">
                   Select Client
                 </label>
@@ -348,7 +349,7 @@ export default function EmailBuilder() {
           {templateName && client && (
             <>
               {/* Email Title */}
-              <div className="mb-3">
+              <div>
                 <label htmlFor="emailTitle" className="form-label">
                   Email Title 
                 </label>
@@ -363,7 +364,7 @@ export default function EmailBuilder() {
               </div>
 
               {/* Rich Text Email Body */}
-              <div className="mb-3">
+              <div>
                 <label htmlFor="emailBody" className="form-label">
                   Email Body
                 </label>
@@ -409,7 +410,75 @@ export default function EmailBuilder() {
                 />
               </div>
 
+              {/* IMAGE UPLOAD SECTION */}
+              <div>
+                {!uploadedImage ? (
+                  <>
+                    <button
+                      type="button"
+                      className="btn btn-outline-dark"
+                      onClick={() => document.getElementById('imageUpload')?.click()}
+                    >
+                      Include Image
+                    </button>
+                    <input
+                      type="file"
+                      id="imageUpload"
+                      className="d-none"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                    <small className="form-text text-muted d-block mt-1">
+                      Maximum file size: 5MB. Supported formats: JPG, PNG, GIF, WebP
+                    </small>
+                  </>
+                ) : (
+                    <div className="uploaded-image-preview">
+                      <label className="form-label">Uploaded Image</label>
+                      <div className="image-preview-container mb-2">
+                        <Image
+                          src={uploadedImage}
+                          alt="Uploaded preview"
+                          width={200}
+                          height={100}
+                          style={{ objectFit: 'contain', border: '1px solid #ddd', borderRadius: '4px' }}
+                        />
+                      </div>
+                      
+                      {/* Image Size Controls */}
+                      <div>
+                        <label htmlFor="imageWidth" className="form-label">
+                          Image Width: {Math.min(imageWidth, 600)}px
+                        </label>
+                        <input
+                          type="range"
+                          id="imageWidth"
+                          className="form-range"
+                          min="100"
+                          max="600"
+                          step="10"
+                          value={imageWidth}
+                          onChange={(e) => setImageWidth(parseInt(e.target.value))}
+                        />
+                        <div className="d-flex justify-content-between">
+                          <small className="text-muted">100px</small>
+                          <small className="text-muted">600px (max)</small>
+                        </div>
+                      </div>
+                      
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={removeImage}
+                      >
+                        Remove Image
+                      </button>
+                    </div>
+                  )}
+                </div>
+
               {/* CTA BUTTON CONFIGURATION */}
+              <div>
               <div className="form-check mb-2">
                 <input
                   type="checkbox"
@@ -442,6 +511,10 @@ export default function EmailBuilder() {
                   />
                 </>
               )}
+              </div>
+
+
+
 
               {/* FOOTER CONFIGURATION */}
               <div className="form-check mb-3">
@@ -457,84 +530,7 @@ export default function EmailBuilder() {
                 </label>
               </div>
 
-              {/* IMAGE UPLOAD CONFIGURATION */}
-              <div className="form-check mb-2">
-                <input
-                  type="checkbox"
-                  id="includeImage"
-                  className="form-check-input"
-                  checked={includeImage}
-                  onChange={(e) => setIncludeImage(e.target.checked)}
-                />
-                <label htmlFor="includeImage" className="form-check-label">
-                  Include Image?
-                </label>
-              </div>
 
-              {/* IMAGE UPLOAD FIELD - only shown when enabled */}
-              {includeImage && (
-                <div className="mb-3">
-                  {!uploadedImage ? (
-                    <>
-                      <label htmlFor="imageUpload" className="form-label">
-                        Upload Image
-                      </label>
-                      <input
-                        type="file"
-                        id="imageUpload"
-                        className="form-control"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                      />
-                      <small className="form-text text-muted">
-                        Maximum file size: 5MB. Supported formats: JPG, PNG, GIF, WebP
-                      </small>
-                    </>
-                  ) : (
-                    <div className="uploaded-image-preview">
-                      <label className="form-label">Uploaded Image</label>
-                      <div className="image-preview-container mb-2">
-                        <Image
-                          src={uploadedImage}
-                          alt="Uploaded preview"
-                          width={200}
-                          height={100}
-                          style={{ objectFit: 'contain', border: '1px solid #ddd', borderRadius: '4px' }}
-                        />
-                      </div>
-                      
-                      {/* Image Size Controls */}
-                      <div className="mb-3">
-                        <label htmlFor="imageWidth" className="form-label">
-                          Image Width: {Math.min(imageWidth, 600)}px
-                        </label>
-                        <input
-                          type="range"
-                          id="imageWidth"
-                          className="form-range"
-                          min="100"
-                          max="600"
-                          step="10"
-                          value={imageWidth}
-                          onChange={(e) => setImageWidth(parseInt(e.target.value))}
-                        />
-                        <div className="d-flex justify-content-between">
-                          <small className="text-muted">100px</small>
-                          <small className="text-muted">600px (max)</small>
-                        </div>
-                      </div>
-                      
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={removeImage}
-                      >
-                        Remove Image
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
             </>
           )}
           </div>
