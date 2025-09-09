@@ -213,8 +213,6 @@ export default function EmailBuilder() {
 
   /** Reset entire form to initial state */
   const resetForm = () => {
-    setTemplateName('');
-    setClient('');
     clearContentFields();
     setShowToast({ message: 'Form reset successfully!', type: 'success' });
   };

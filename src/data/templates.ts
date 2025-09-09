@@ -61,7 +61,7 @@ export const templates: Templates = {
 
           <!-- CTA Button -->
           <tr>
-            <td align="center" style="padding:16px;">
+            <td align="center" style="padding:16px; padding-bottom:40px">
               {{cta_button}}
             </td>
           </tr>
@@ -85,7 +85,7 @@ export const templates: Templates = {
     "Royal Canin": {
       logo: "https://cdn.brandfetch.io/ide1aIn1hE/theme/dark/logo.svg?c=1dxbfHSJFAPEGdCLU4o5B",
       ctaColor: "#E2001A",
-      ctaTemplate: `<a target="_blank" href="{{cta_link}}" style="display:inline-block; background-color:#E2001A; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:5px; font-size:14px;">{{cta_text}}</a>`,
+      ctaTemplate: `<a target="_blank" href="{{cta_link}}" style="display:inline-block; background-color:#E2001A; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:5px; font-size:14px">{{cta_text}}</a>`,
       footerTemplate: `
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#e9e9e9; font-family:Arial, sans-serif;">
     <tr>
