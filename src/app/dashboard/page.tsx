@@ -12,7 +12,6 @@ export default function DashboardPage() {
             How can I help you today?
           </p>
         </div>
-   
           
           <div>
           <h3>Email Tools</h3>
@@ -46,7 +45,7 @@ export default function DashboardPage() {
                     alt="Magic"
                     className="icon icon-xl"
                   />
-                  <h5 className="card-title">Smart HTML</h5>
+                  <h5 className="card-title">Smart HTML <span className="badge text-bg-danger">Beta</span></h5>
                   <p className="card-text">Upload HTML files and edit text content with live preview</p>
                   <a href="/smart-html" className="btn btn-secondary">
                     Open Smart HTML
@@ -65,7 +64,7 @@ export default function DashboardPage() {
                     alt="Translate"
                     className="icon icon-xl"
                   />
-                  <h5 className="card-title">HTML Translator</h5>
+                  <h5 className="card-title">HTML Translator <span className="badge text-bg-danger">Beta</span></h5>
                   <p className="card-text">Translate HTML files to English, Spanish, or French with live preview</p>
                   <a href="/html-translator" className="btn btn-danger">
                     Open HTML Translator
@@ -88,7 +87,7 @@ export default function DashboardPage() {
                     alt="Email"
                     className="icon icon-xl"
                   />
-                  <h5 className="card-title">Image Resizing</h5>
+                  <h5 className="card-title">Image Resizing <span className="badge text-bg-success">New!</span></h5>
                   <p className="card-text">Resize images according to our Paygos guidelines</p>
                   <a href="/image-resize" className="btn btn-info">
                     Open Image Resizing
@@ -97,8 +96,29 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-      </div>
 
+            <div>
+            <h3>PDF Tools</h3>
+              <div className="col-md-6">
+              <div className="card border-info">
+                <div className="card-body text-center">
+                  <Image
+                    src="/icons/icon-pdf.png"
+                    width={32}
+                    height={32}
+                    alt="Email"
+                    className="icon icon-xl"
+                  />
+                  <h5 className="card-title">PDF Generator <span className="badge text-bg-danger">Beta</span></h5>
+                  <p className="card-text">Create branded PDF Documents with customizable templates</p>
+                  <a href="/pdf-generator" className="btn btn-success">
+                    Open PDF Generator
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
       </Layout>
   )
 }

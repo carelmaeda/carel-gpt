@@ -113,7 +113,14 @@ function Sidebar({ isOpen, isDesktop, onClose }: SidebarProps) {
       icon: '/icons/icon-photos.png',
       label: 'Image Resize',
       exact: true
+    },
+    {
+      href: '/pdf-generator',
+      icon: '/icons/icon-pdf.png',
+      label: 'PDF Generator',
+      exact: true
     }
+    
   ]
 
 

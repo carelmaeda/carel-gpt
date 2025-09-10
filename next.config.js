@@ -9,7 +9,10 @@ const nextConfig = {
   experimental: {
     // Reduce file system polling
     optimizePackageImports: [],
-  }
+  },
+  sassOptions: {
+    silenceDeprecations: ['legacy-js-api'],
+  },
 }
 
 module.exports = nextConfig
