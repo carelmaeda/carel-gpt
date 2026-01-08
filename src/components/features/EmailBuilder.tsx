@@ -3,12 +3,24 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import Image from 'next/image';
-import { templates, Templates } from '@/data/templates';
+import { templates, Templates, Template } from '@/data/templates';
 import { renderTemplate } from '@/lib/renderTemplate';
+import TemplateManager from './TemplateManager';
 
 
 export default function EmailBuilder() {
-  const templatesData: Templates = templates;
+  // Load custom templates from localStorage on mount
+  const [customTemplates, setCustomTemplates] = useState<Template[]>([]);
+
+  // Combine default templates with custom templates
+  const allTemplates = useMemo(() => {
+    return [...templates.templates, ...customTemplates];
+  }, [customTemplates]);
+
+  const templatesData: Templates = {
+    ...templates,
+    templates: allTemplates
+  };
 
   // =============================================================================
   // CONSTANTS & STATIC DATA
@@ -24,7 +36,7 @@ export default function EmailBuilder() {
 
   // Form Data States
   const [client, setClient] = useState('');
-  const [templateName, setTemplateName] = useState('template1');
+  const [templateName, setTemplateName] = useState('');
   const [emailBody, setEmailBody] = useState('');
   const [emailTitle, setEmailTitle] = useState('');
   
@@ -41,7 +53,8 @@ export default function EmailBuilder() {
   const [finalHtml, setFinalHtml] = useState('');
   const [showToast, setShowToast] = useState<{ message: string; type: 'success' | 'error' | 'info' | 'warning' } | null>(null);
   const [showClientDropdown, setShowClientDropdown] = useState(false);
-  
+  const [showTemplateManager, setShowTemplateManager] = useState(false);
+
   // Refs
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -64,6 +77,19 @@ export default function EmailBuilder() {
   // =============================================================================
   // EFFECTS & SIDE-EFFECTS
   // =============================================================================
+
+  /** Load custom templates from localStorage on mount */
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('customEmailTemplates');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setCustomTemplates(parsed);
+      }
+    } catch (error) {
+      console.error('Failed to load custom templates:', error);
+    }
+  }, []);
 
   /** Main effect: Generate HTML when form data changes */
   useEffect(() => {
@@ -232,17 +258,32 @@ export default function EmailBuilder() {
       const a = document.createElement('a');
       a.href = url;
       a.download = `${client || 'unknown'}-${templateName || 'email'}.html`;
-      
+
       // Trigger download
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      
+
       setShowToast({ message: 'HTML downloaded successfully!', type: 'success' });
     } catch (error) {
       setShowToast({ message: 'Failed to download HTML.', type: 'error' });
       console.error('Download error:', error);
+    }
+  };
+
+  /** Handle template manager save */
+  const handleTemplatesSave = (updatedTemplates: Template[]) => {
+    // Filter out default templates (only save custom ones)
+    const customOnly = updatedTemplates.filter(t => t.id !== 'template1');
+
+    try {
+      localStorage.setItem('customEmailTemplates', JSON.stringify(customOnly));
+      setCustomTemplates(customOnly);
+      setShowToast({ message: 'Templates saved successfully!', type: 'success' });
+    } catch (error) {
+      setShowToast({ message: 'Failed to save templates.', type: 'error' });
+      console.error('Save error:', error);
     }
   };
 
@@ -253,8 +294,16 @@ export default function EmailBuilder() {
   return (
     <>
       <div className="app-container">
-        <h2 className="app-title">Email Generator</h2>
-        
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h2 className="app-title mb-0">Email Generator</h2>
+          <button
+            className="btn btn-outline-primary btn-sm"
+            onClick={() => setShowTemplateManager(true)}
+          >
+            Manage Templates
+          </button>
+        </div>
+
         <div className="two-column-layout">
           {/* ===== LEFT COLUMN: FORM CONTROLS ===== */}
           <div className="form-column">
@@ -264,28 +313,29 @@ export default function EmailBuilder() {
               <label className="form-label">
                 Select Template
               </label>
-              <div className="form-radio">
-                <input
-                  type="radio"
-                  id="template1"
-                  name="templateSelect"
-                  disabled
-                  value="template1"
-                  checked={templateName === 'template1'}
-                  onChange={(e) => {
-                    setTemplateName(e.target.value);
-                    // Clear content fields when template changes
-                    clearContentFields();
-                  }}
-                />
-                <label htmlFor="template1" className='d-grid'>
-                  <small className='text-primary'>Template 1</small>
-                  <hr className='m-1 p-0'/>
-                  <small>Logo</small>
-                  <small>Title</small>
-                  <small>Body</small>
-                </label>
-              </div>
+              {availableTemplates.map((template) => (
+                <div key={template.id} className="form-radio">
+                  <input
+                    type="radio"
+                    id={template.id}
+                    name="templateSelect"
+                    value={template.id}
+                    checked={templateName === template.id}
+                    onChange={(e) => {
+                      setTemplateName(e.target.value);
+                      // Clear content fields when template changes
+                      clearContentFields();
+                    }}
+                  />
+                  <label htmlFor={template.id} className='d-grid'>
+                    <small className='text-primary'>{template.name}</small>
+                    <hr className='m-1 p-0'/>
+                    <small>Logo</small>
+                    <small>Title</small>
+                    <small>Body</small>
+                  </label>
+                </div>
+              ))}
             </div>
 
             {/* CLIENT SELECTION DROPDOWN - Only show if template is selected */}
@@ -595,6 +645,14 @@ export default function EmailBuilder() {
           </div>
         </div>
       )}
+
+      {/* ===== TEMPLATE MANAGER MODAL ===== */}
+      <TemplateManager
+        isOpen={showTemplateManager}
+        onClose={() => setShowTemplateManager(false)}
+        onSave={handleTemplatesSave}
+        existingTemplates={allTemplates}
+      />
     </>
   );
 }
